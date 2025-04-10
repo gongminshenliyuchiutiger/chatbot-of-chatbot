@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教學ChatBot行為指示生成神助手</title>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet"> <!-- Added 600 weight -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+<style>
+    /* --- CSS (Includes Updated Robot Avatar with Moving Pupils & Theme Colors) --- */
+    :root {
+        --font-family: 'Noto Sans TC', 'Arial', sans-serif;
+        /* Theme Colors */
+        --primary-color: #005A9C; /* Dark Blue */
+        --secondary-color: #00A9E0; /* Light Blue */
+        --accent-color: #FFC425; /* Orange/Yellow */
+        /* Other Colors */
+        --background-gradient: linear-gradient(135deg, #E8F1F5, #DDEBFF);
+        --container-bg: #FFFFFF;
+        --text-color: #333333;
+        --text-light: #555555;
+        --border-color: #DEE2E6;
+        --input-bg: #F8F9FA;
+        --bot-bubble-bg: #E9ECEF;
+        --user-bubble-bg: var(--primary-color);
+        --button-option-bg: var(--secondary-color);
+        --button-option-hover-bg: #008CB3;
+        --button-reset-bg: #DC3545;
+        --button-reset-hover-bg: #C82333;
+        --button-action-copy-bg: #17A2B8;
+        --button-action-copy-hover-bg: #138496;
+        --button-action-download-bg: #007BFF;
+        --button-action-download-hover-bg: #0056B3;
+        --success-color: #28A745;
+        --error-color: #DC3545;
+        --disabled-color: #ADB5BD;
+        /* Layout & Effects */
+        --border-radius: 8px;
+        --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --box-shadow-light: 0 1px 4px rgba(0, 0, 0, 0.05);
+        /* Robot Specific Colors (Derived from Theme) */
+        --robot-face-gradient: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        --robot-eye-border: var(--primary-color);
+        --robot-pupil-color: #333; /* Keep dark for visibility */
+        --robot-mouth-color: var(--accent-color);
+        --robot-antenna-color: var(--secondary-color);
+        --robot-antenna-tip-color: var(--accent-color);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-family); margin: 0; padding: 25px; background: var(--background-gradient); color: var(--text-color); line-height: 1.6; font-size: 16px; }
+    h1, h2, h3 { color: var(--primary-color); font-weight: 700; margin-top: 0; }
+    h1 { text-align: center; font-size: 2.2em; margin-bottom: 10px; } h1 i { margin-right: 12px; color: var(--secondary-color); animation: spin 3s infinite linear; }
+    h2 { font-size: 1.6em; margin-bottom: 15px; border-bottom: 2px solid var(--secondary-color); padding-bottom: 8px; } h3 { font-size: 1.3em; margin-bottom: 12px; color: var(--secondary-color); font-weight: 600;}
+    p { margin: 0 0 12px 0; color: var(--text-light); } ul { padding-left: 20px; list-style: none; } li { margin-bottom: 8px; }
+    button { font-family: var(--font-family); cursor: pointer; border: none; border-radius: var(--border-radius); padding: 10px 15px; transition: all 0.2s ease-in-out; } button:disabled { cursor: not-allowed; opacity: 0.7; }
+    input[type="text"] { font-family: var(--font-family); padding: 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1em; } input[type="text"]:disabled { background-color: #E9ECEF; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .container { background: var(--container-bg); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); margin-bottom: 25px; max-width: 850px; margin-left: auto; margin-right: auto; }
+    #progress-indicator { text-align: center; color: var(--text-light); font-size: 0.9em; margin-bottom: 20px; background-color: var(--bot-bubble-bg); padding: 5px 10px; border-radius: 4px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
+    .chat-log { border: 1px solid var(--border-color); padding: 15px; margin-bottom: 20px; height: 450px; overflow-y: auto; background: #FDFDFD; border-radius: var(--border-radius); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04); }
+    .message { display: flex; align-items: flex-end; margin-bottom: 20px; animation: fadeIn 0.4s ease-out; } @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .bot-message { flex-direction: row; } .user-message { flex-direction: row-reverse; }
+
+    /* --- Updated Robot Avatar --- */
+    .bot-avatar {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+        position: relative;
+        flex-shrink: 0;
+    }
+    .bot-avatar .face {
+        width: 32px;
+        height: 32px;
+        background: var(--robot-face-gradient); /* Updated Gradient */
+        border-radius: 50%;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden; /* Important to contain pupils */
+    }
+    .bot-avatar .eye {
+        width: 6px;
+        height: 6px;
+        background-color: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 10px; /* Adjusted slightly for pupil space */
+        border: 1px solid var(--robot-eye-border); /* Updated Border Color */
+        animation: blinkEyes 2s infinite;
+        /* Ensure eyes are above pupils if needed (though pupils are inside) */
+        z-index: 1;
+    }
+    .bot-avatar .eye-left { left: 8px; } /* Adjusted position for symmetry */
+    .bot-avatar .eye-right { left: 18px; } /* Adjusted position for symmetry */
+
+    /* --- NEW: Pupil Styles --- */
+    .bot-avatar .pupil {
+        width: 3px; /* Pupil size */
+        height: 3px;
+        background-color: var(--robot-pupil-color); /* Pupil color */
+        border-radius: 50%;
+        position: absolute;
+        /* Centered within the eye initially */
+        top: 1.5px; /* (eye height - pupil height) / 2 */
+        left: 1.5px; /* (eye width - pupil width) / 2 */
+        /* Movement Animation */
+        animation: movePupils 5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        /* Display the pupil */
+        display: block; /* Removed display: none; */
+        z-index: 2; /* Ensure pupil is visually inside the eye */
+    }
+    /* --- NEW: Pupil Movement Animation --- */
+    @keyframes movePupils {
+        0%, 100% { transform: translate(0, 0); } /* Center */
+        20% { transform: translate(0.75px, -0.5px); } /* Top-right */
+        40% { transform: translate(-0.75px, 0.75px); } /* Bottom-left */
+        60% { transform: translate(0.75px, 0.5px); } /* Bottom-right */
+        80% { transform: translate(-0.5px, -0.75px); } /* Top-left */
+    }
+
+    .bot-avatar .mouth {
+        width: 12px;
+        height: 4px;
+        background-color: var(--robot-mouth-color); /* Updated Mouth Color */
+        border-radius: 2px;
+        position: absolute;
+        top: 21px; /* Slightly adjusted position */
+        left: 10px; /* Adjusted position */
+        transform: rotate(-5deg); /* Slightly less tilt */
+    }
+    .bot-avatar::before { /* Antenna */
+        content: '';
+        width: 2px;
+        height: 10px;
+        background-color: var(--robot-antenna-color); /* Updated Antenna Color */
+        position: absolute;
+        top: -5px;
+        left: 19px;
+        animation: antennaWiggle 1s infinite alternate;
+        transform-origin: bottom;
+    }
+    .bot-avatar::after { /* Antenna Tip */
+        content: '';
+        width: 6px;
+        height: 6px;
+        background-color: var(--robot-antenna-tip-color); /* Updated Tip Color */
+        border-radius: 50%;
+        position: absolute;
+        top: -8px; /* Adjusted position */
+        left: 17px; /* Adjusted position */
+    }
+    /* --- End Updated Robot Avatar --- */
+
+    /* --- Existing Animations (Keep As Is) --- */
+    @keyframes blinkEyes {
+        0%, 10%, 100% { transform: scaleY(1); }
+        5% { transform: scaleY(0.1); } /* Change height via scale for smoother look */
+    }
+    @keyframes antennaWiggle {
+        0% { transform: rotate(-5deg); }
+        100% { transform: rotate(5deg); }
+    }
+
+    .bubble { max-width: calc(100% - 70px); padding: 10px 18px; border-radius: 15px; font-size: 0.95em; line-height: 1.5; box-shadow: var(--box-shadow-light); word-wrap: break-word; border: 1px solid transparent; }
+    .bot-bubble { background: var(--bot-bubble-bg); color: var(--text-color); border-color: #E0E0E0; border-radius: 0 15px 15px 15px; }
+    .user-bubble { background: var(--user-bubble-bg); color: #fff; border-radius: 15px 0 15px 15px; }
+    .bot-bubble i, .user-bubble i { font-style: normal; color: var(--text-light); font-size: 0.9em; }
+    .typing-indicator-container { display: flex; align-items: center; padding: 5px 0; }
+    .typing-indicator-container span { height: 8px; width: 8px; margin: 0 2px; background-color: var(--text-light); border-radius: 50%; display: inline-block; animation: typing 1s infinite ease-in-out; }
+    .typing-indicator-container span:nth-child(1) { animation-delay: 0s; } .typing-indicator-container span:nth-child(2) { animation-delay: 0.1s; } .typing-indicator-container span:nth-child(3) { animation-delay: 0.2s; }
+    @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+    .input-area { display: flex; gap: 12px; align-items: center; background: var(--input-bg); padding: 12px; border-radius: var(--border-radius); border: 1px solid var(--border-color); margin-top: 10px; }
+    #user-input { flex-grow: 1; border: 1px solid var(--border-color); background: #fff; &:focus { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(0, 90, 156, 0.2); outline: none; } }
+    .input-area > div { display: flex; gap: 10px; }
+    #send-button { background: var(--primary-color); color: #fff; font-weight: 500; } #send-button:hover { background: #004175; }
+    #reset-button { background: var(--button-reset-bg); color: #fff; } #reset-button:hover { background: var(--button-reset-hover-bg); }
+    .option-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0 5px 0; justify-content: center; border-top: 1px dashed var(--border-color); padding-top: 15px; min-height: 30px; text-align: center; }
+    .option-buttons.loading::before { content: "AI 正在產生建議..."; font-style: italic; color: var(--text-light); font-size: 0.9em; width: 100%; }
+    .option-btn { background: var(--button-option-bg); color: #fff; font-size: 0.9em; padding: 8px 14px; box-shadow: none; border: 1px solid transparent; &:hover { background: var(--button-option-hover-bg); transform: translateY(-1px); } }
+
+    /* --- Output Section Layout Updates (No Changes Needed Here) --- */
+    .output-section { text-align: left; display: none; }
+    .output-section h2 { text-align: center; color: var(--primary-color); margin-bottom: 25px; }
+    .output-content-section {
+        background: #F8F9FA; border: 1px solid var(--border-color); border-radius: var(--border-radius);
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: var(--box-shadow-light);
+    }
+    .output-content-section h3 {
+        border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+        margin-bottom: 18px;
+        display: flex; align-items: center; gap: 10px;
+    }
+    .output-content-section h3 i { color: var(--secondary-color); font-size: 1.1em; }
+    .output-content-section ul { padding-left: 0; list-style-position: inside; }
+    .output-content-section #output-instructions ul li {
+         background: transparent; padding: 0; border: none;
+         margin-bottom: 12px;
+         display: flex; align-items: flex-start;
+    }
+    .output-content-section #output-instructions ul li i {
+         margin-right: 10px; color: var(--secondary-color); width: 1.3em;
+         text-align: center; flex-shrink: 0; margin-top: 0.2em;
+         font-size: 0.95em;
+    }
+    .output-content-section #output-instructions ul li strong {
+        color: var(--primary-color); margin-right: 8px;
+        font-weight: 600;
+        display: block; margin-bottom: 4px;
+    }
+    .output-content-section #output-instructions ul li span {
+        flex-grow: 1; color: var(--text-light); white-space: pre-wrap;
+        line-height: 1.6;
+    }
+    .output-content-section p { margin-left: 0; margin-bottom: 5px; }
+    .output-content-section .structured-list { padding-left: 0; list-style: none; }
+    .output-content-section .structured-list li {
+        margin-bottom: 10px;
+        padding-left: 1.8em;
+        position: relative;
+    }
+    .output-content-section .structured-list li::before {
+        content: "✔";
+        color: var(--secondary-color); position: absolute; left: 0; top: 0;
+        font-weight: bold; font-size: 1.1em;
+    }
+    .output-content-section .structured-list li strong { display: inline; margin-bottom: 0; margin-right: 5px; font-weight: 600; }
+    .output-content-section .structured-list li span { white-space: normal; }
+
+    /* Rubric Table Enhancements */
+    .output-table { width: 100%; border-collapse: collapse; margin-top: 15px; border: 1px solid #B0C4DE; }
+    .output-table th, .output-table td {
+        border: 1px solid #B0C4DE; padding: 10px 12px;
+        vertical-align: top;
+        text-align: left;
+    }
+    .output-table th {
+        background: #D6EAF8; color: var(--primary-color); font-weight: 600;
+        text-align: center;
+    }
+    .output-table td { background: #fff; color: var(--text-light); font-size: 0.9em; }
+    .output-table tr:nth-child(even) td { background: #F4F8FB; }
+    .output-table i { display: none; }
+    /* --- End Output Section Layout Updates --- */
+
+    .action-buttons { margin-top: 20px; display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap; padding-top: 15px; border-top: 1px solid var(--border-color); }
+    .action-btn { padding: 10px 20px; font-size: 0.95em; font-weight: 500; color: #fff; }
+    #copy-button { background-color: var(--button-action-copy-bg); } #copy-button:hover { background-color: var(--button-action-copy-hover-bg); }
+    #download-button { background-color: var(--button-action-download-bg); } #download-button:hover { background-color: var(--button-action-download-hover-bg); }
+    .copy-status { color: var(--success-color); font-weight: 500; min-height: 1.2em; display: inline-block; padding: 0 10px; }
+    .copyright { text-align: center; font-size: 0.8em; color: #888; margin-top: 30px; padding-bottom: 10px; } .copyright i { margin-right: 5px; color: var(--secondary-color); }
+
+    /* Media Queries - Adjust pupil/eye sizes if needed */
+    @media (max-width: 600px) {
+        body { padding: 15px; } h1 { font-size: 1.6em; } .container { padding: 15px; } .chat-log { height: 350px; }
+         .bot-avatar { width: 35px; height: 35px; margin-right: 10px;}
+         .bot-avatar .face { width: 28px; height: 28px; top: 3px; left: 3px;}
+         .bot-avatar .eye { width: 5px; height: 5px; top: 9px;} /* Smaller eye */
+         .bot-avatar .eye-left { left: 7px;} /* Adjusted */
+         .bot-avatar .eye-right { left: 16px;} /* Adjusted */
+         /* --- Adjust Pupil for smaller size --- */
+         .bot-avatar .pupil {
+            width: 2.5px; /* Smaller pupil */
+            height: 2.5px;
+            top: 1.25px; /* Re-center */
+            left: 1.25px;
+         }
+         /* Optional: Reduce pupil movement slightly on small screens */
+         @keyframes movePupils {
+             0%, 100% { transform: translate(0, 0); }
+             20% { transform: translate(0.6px, -0.4px); }
+             40% { transform: translate(-0.6px, 0.6px); }
+             60% { transform: translate(0.6px, 0.4px); }
+             80% { transform: translate(-0.4px, -0.6px); }
+         }
+         .bot-avatar .mouth { width: 10px; height: 3px; top: 19px; left: 9px;} /* Adjusted */
+         .bot-avatar::before { height: 8px; top: -4px; left: 16px;}
+         .bot-avatar::after { width: 5px; height: 5px; top: -7px; left: 15px;}
+         /* --- End Pupil Adjustment --- */
+         .bubble { font-size: 0.9em; padding: 8px 14px; max-width: calc(100% - 60px); border-radius: 12px;}
+         .bot-bubble { border-radius: 0 12px 12px 12px; } .user-bubble { border-radius: 12px 0 12px 12px; }
+         .input-area { flex-direction: column; gap: 10px; } #user-input { width: 100%; box-sizing: border-box; }
+         .input-area > div { width: 100%; justify-content: space-between; }
+         #send-button, #reset-button { padding: 10px; font-size: 0.95em; flex-grow: 1; margin: 0 2%;}
+         .option-buttons { margin-top: 12px; padding-top: 12px; } .option-btn { font-size: 0.8em; padding: 7px 12px;}
+         .output-section h2 { font-size: 1.4em; } .output-section h3 { font-size: 1.15em; }
+         .output-content-section { padding: 15px; margin-bottom: 20px;}
+         .output-table th, .output-table td { padding: 8px; font-size: 0.85em;}
+         .action-buttons { gap: 10px; } .action-btn { padding: 9px 16px; font-size: 0.9em; }
+         #progress-indicator { font-size: 0.85em; }
+    }
+</style>
+
+
+</head>
+<body>
+    <h1><i class="fas fa-magic"></i>教學ChatBot行為指示生成神助手</h1>
+    <div id="progress-indicator" style="display: none;">步驟 1 / 7</div>
+
+    <div class="container">
+        <div class="chat-log" id="chat-log">
+            <!-- Typing indicator structure (initially hidden) -->
+            <div class="message bot-message" id="typing-indicator" style="display: none;">
+                 <div class="bot-avatar"> <!-- Avatar now uses updated styles -->
+                     <div class="face">
+                         <div class="eye eye-left"><div class="pupil"></div></div>
+                         <div class="eye eye-right"><div class="pupil"></div></div>
+                         <div class="mouth"></div>
+                     </div>
+                 </div>
+                 <div class="bubble bot-bubble">
+                     <div class="typing-indicator-container"><span></span><span></span><span></span></div>
+                 </div>
+            </div>
+            <!-- Initial messages added by JS -->
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="請輸入回答或點選按鈕..." disabled> <!-- Start disabled -->
+            <div> <!-- Button container -->
+                <button id="send-button" title="送出回答" disabled><i class="fas fa-paper-plane"></i> 送出</button>
+                <button id="reset-button" title="重新開始"><i class="fas fa-sync-alt"></i> 重來</button>
+            </div>
+        </div>
+        <div class="option-buttons" id="option-buttons">
+            <!-- Option buttons added by JS -->
+        </div>
+    </div>
+
+    <!-- Output Section -->
+    <div class="container output-section" id="output-section"> <!-- Uses updated layout styles -->
+        <h2><i class="fas fa-file-alt"></i> 生成的教學Chatbot行為指示結果</h2>
+        <div id="output-content">
+            <!-- Generated content added by JS into styled sections -->
+        </div>
+        <div class="action-buttons">
+            <button class="action-btn" id="copy-button" title="複製 Markdown 格式內容"><i class="fas fa-copy"></i> 複製 Markdown</button>
+            <span id="copy-status" class="copy-status"></span>
+            <button class="action-btn" id="download-button" title="下載為 Word (.doc) 文件"><i class="fas fa-file-word"></i> 下載 Word</button>
+        </div>
+    </div>
+
+    <div class="copyright">
+        <i class="fas fa-copyright"></i> Copyright © Liyuchiutiger Gongminshen
+    </div>
+
+    <!-- === JAVASCRIPT (No changes needed from last version) === -->
+    <script type="importmap">
+      { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
+    </script>
+
+    <script type="module">
+        import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+
+        // --- DOM Elements ---
+        const chatLog = document.getElementById('chat-log');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const resetButton = document.getElementById('reset-button');
+        const optionButtons = document.getElementById('option-buttons');
+        const outputSection = document.getElementById('output-section');
+        const outputContent = document.getElementById('output-content');
+        const copyButton = document.getElementById('copy-button');
+        const downloadButton = document.getElementById('download-button');
+        const copyStatus = document.getElementById('copy-status');
+        const progressIndicator = document.getElementById('progress-indicator');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        // --- API Key (WARNING: INSECURE - SEE NOTE ABOVE) ---
+        const API_KEY = "AIzaSyCerlnUOTQ4-5K6VRpugpRI1URcOF6ai2w"; // <<< YOUR KEY IS HERE
+
+        let genAI = null;
+        let model = null;
+        let apiAvailable = false;
+
+        if (API_KEY && API_KEY !== "YOUR_API_KEY_HERE") { // Keep the check for placeholder just in case
+            try {
+                genAI = new GoogleGenerativeAI(API_KEY);
+                 model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+                apiAvailable = true;
+                console.log("Gemini AI Initialized Successfully.");
+            } catch (error) {
+                console.error("Failed to initialize GoogleGenerativeAI:", error);
+                // Error will be displayed in the chat later
+            }
+        } else {
+            console.warn("API Key is missing or still placeholder. AI features disabled.");
+            // Message will be shown in chat later
+        }
+
+
+        // --- Generation & Safety Config ---
+        const generationConfig = { temperature: 0.7, topK: 1, topP: 1, maxOutputTokens: 250 };
+        const safetySettings = [
+           { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+           { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+           { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+           { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+        ];
+
+        // --- State Variables ---
+        let conversationHistory = [];
+        let currentStep = 0;
+        let generatedData = {}; // Initialized in resetConversation
+        let isBotTyping = false;
+        let isWaitingForAI = false;
+
+        // --- Questions & Config ---
+        const questions = [
+            "請問您想教授什麼課程？（可選擇或自行輸入）", // 0: subject
+            "您希望學生學會這個課程中的哪個「具體概念或技能」？", // 1: goalKeyword
+            "請為這個專門教「{goal}」的 Chatbot 取一個有趣的名字！", // 2: chatbotName
+            "這個 Chatbot 主要用哪種方式幫助學生學習「{goal}」？", // 3: appType
+            "請選擇一個 Chatbot 的「角色身份」，讓互動更有趣！", // 4: botRole
+            "Chatbot 應該使用什麼樣的「語氣」與學生互動？", // 5: botTone
+            "為了檢視學習成效，請設計一個跟「{goal}」相關的「練習任務」？" // 6: exerciseTask
+        ];
+        const TOTAL_STEPS = questions.length;
+        const STEPS_REQUIRING_AI = [1, 2, 3, 4, 6];
+
+        // --- Suggestion Map (Fixed Options) ---
+        const suggestionMap = {
+            subjects: [ "國文", "數學", "英文", "物理", "化學", "生物", "地科", "歷史", "地理", "公民與社會", "音樂", "美術", "藝術生活", "生活科技", "資訊科技", "生涯規劃", "生命教育", "家政", "健康與護理", "體育", "全民國防" ],
+            tones: [ "親切耐心", "活潑有趣", "專業嚴謹", "鼓勵引導", "幽默風趣", "循循善誘", "簡潔明瞭", "熱情洋溢", "沉穩可靠", "俏皮機智", "中二病發", "神祕詭譎", "大師開示", "稱兄道弟", "完美閨蜜"]
+        };
+
+        // --- Example Answers (for quick testing/demo) ---
+        const exampleAnswers = [ "美術", "素描光影表現", "光影小畫家", "步驟式引導示範", "繪畫魔法師", "親切耐心", "畫出一個具有明暗光影的球體" ];
+
+        // --- Helper Functions ---
+        const getData = (path, defaultValue = "<em>未提供</em>") => {
+             try {
+                 const keys = path.split('.'); let current = generatedData;
+                 for (const key of keys) { if (current === null || typeof current !== 'object' || !(key in current)) { return defaultValue; } current = current[key]; }
+                 return current === "" || current === null || current === undefined ? defaultValue : current;
+             } catch (e) { console.error("Error getting data for path:", path, e); return defaultValue; }
+        };
+        function showTypingIndicator() { if (!isBotTyping) { typingIndicator.style.display = 'flex'; isBotTyping = true; chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' }); } }
+        function hideTypingIndicator() { if (isBotTyping) { typingIndicator.style.display = 'none'; isBotTyping = false; } }
+        function updateProgressIndicator() { if (currentStep < TOTAL_STEPS) { progressIndicator.textContent = `步驟 ${currentStep + 1} / ${TOTAL_STEPS}`; progressIndicator.style.display = 'inline-block'; } else { progressIndicator.style.display = 'none'; } }
+        function setUIEnabled(enabled) { userInput.disabled = !enabled; sendButton.disabled = !enabled; optionButtons.querySelectorAll('button').forEach(btn => btn.disabled = !enabled); resetButton.disabled = !enabled; isWaitingForAI = !enabled; }
+
+        // --- Core Chat Functions ---
+        function appendMessage(sender, message) {
+             const messageDiv = document.createElement('div'); messageDiv.classList.add('message', `${sender}-message`);
+             if (sender === 'bot') {
+                 const avatar = document.createElement('div'); avatar.classList.add('bot-avatar');
+                 const face = document.createElement('div'); face.classList.add('face');
+                 const eyeLeft = document.createElement('div'); eyeLeft.classList.add('eye', 'eye-left'); const pupilLeft = document.createElement('div'); pupilLeft.classList.add('pupil'); eyeLeft.appendChild(pupilLeft);
+                 const eyeRight = document.createElement('div'); eyeRight.classList.add('eye', 'eye-right'); const pupilRight = document.createElement('div'); pupilRight.classList.add('pupil'); eyeRight.appendChild(pupilRight);
+                 const mouth = document.createElement('div'); mouth.classList.add('mouth');
+                 face.appendChild(eyeLeft); face.appendChild(eyeRight); face.appendChild(mouth); avatar.appendChild(face); messageDiv.appendChild(avatar);
+             }
+             const bubble = document.createElement('div'); bubble.classList.add('bubble', `${sender}-bubble`); bubble.innerHTML = message; messageDiv.appendChild(bubble);
+             const typingElem = document.getElementById('typing-indicator');
+             if (typingElem) { chatLog.insertBefore(messageDiv, typingElem); } else { chatLog.appendChild(messageDiv); }
+        }
+
+        // --- AI Suggestion Generation ---
+        async function getDynamicSuggestions(step, context) {
+            if (!apiAvailable || !model) { console.warn("AI not available. Skipping suggestions."); return []; }
+            const { subject = "一般主題", goalKeyword = "核心概念" } = context;
+            let prompt = "";
+            const outputFormatInstruction = "請提供最多4個相關的、簡短的建議。請用繁體中文回答。將建議嚴格格式化為一個 JavaScript 陣列字串，例如：`['建議一', '建議二', '建議三', '建議四']`。不要包含任何其他說明文字、註解或 Markdown 標記。";
+
+            switch (step) {
+                case 1: prompt = `針對教學科目「${subject}」，請建議一些學生可以學習的具體概念或技能（約5-10字）。${outputFormatInstruction}`; break;
+                case 2: prompt = `為一個教學聊天機器人取名，它專門教授「${subject}」的「${goalKeyword}」。請提供約4個創意且相關的名稱。${outputFormatInstruction}`; break;
+                case 3: prompt = `一個聊天機器人要教授「${subject}」的「${goalKeyword}」，它可以主要使用哪些互動方式或教學方法？請提供約4個簡短描述。${outputFormatInstruction}`; break;
+                case 4: prompt = `為一個教授「${subject}」科目中「${goalKeyword}」的聊天機器人，建議約4個有趣的角色身份。${outputFormatInstruction}`; break;
+                case 6: prompt = `針對「${subject}」科目中的「${goalKeyword}」，請設計約4個相關的具體練習任務或活動（簡短描述即可）。${outputFormatInstruction}`; break;
+                default: return [];
+            }
+
+            console.log("Sending prompt to Gemini:", prompt);
+            setUIEnabled(false); optionButtons.innerHTML = ''; optionButtons.classList.add('loading');
+
+            try {
+                const result = await model.generateContent({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig, safetySettings, });
+                const response = result.response;
+
+                 if (!response || !response.candidates || response.candidates.length === 0 || response.candidates[0].finishReason !== 'STOP') {
+                     console.warn("Gemini response issue detected. Reason:", response?.candidates?.[0]?.finishReason);
+                     let blockReason = "未知原因";
+                     if (response?.candidates?.[0]?.finishReason === 'SAFETY') { blockReason = "內容安全設定"; }
+                     else if (response?.candidates?.[0]?.finishReason === 'RECITATION') { blockReason = "引用限制"; }
+                     else if (response?.promptFeedback?.blockReason) { blockReason = `輸入觸發 ${response.promptFeedback.blockReason}`; }
+                     optionButtons.innerHTML = `<small style='color: var(--error-color);'><i>AI 建議生成失敗 (${blockReason})，請嘗試不同描述或手動輸入。</i></small>`;
+                     return [];
+                 }
+
+                const responseText = response.text().trim(); console.log("Gemini Raw Response:", responseText);
+                let suggestions = []; const match = responseText.match(/\[\s*(['"].*?['"]\s*,\s*)*(['"].*?['"])\s*\]/);
+                if (match && match[0]) {
+                    try { const arrayString = match[0].replace(/'/g, '"'); suggestions = JSON.parse(arrayString); if (!Array.isArray(suggestions)) { console.warn("Parsed result not array", suggestions); suggestions = []; } }
+                    catch (parseError) { console.error("Failed to parse JSON:", parseError, "Raw:", match[0]); suggestions = []; }
+                }
+                if (suggestions.length === 0 && responseText.length > 0) {
+                     console.log("Using fallback line splitting");
+                     suggestions = responseText.split('\n').map(s => s.replace(/^-?\s*['"`]?/, '').replace(/['"`]?\s*,?$/, '').trim()).filter(s => s && s.length > 0 && !s.startsWith('[') && !s.endsWith(']'));
+                }
+                console.log("Parsed Suggestions:", suggestions); return suggestions.slice(0, 4);
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                optionButtons.innerHTML = "<small style='color: var(--error-color);'><i>AI 建議生成失敗，請檢查網路或 API 金鑰，或手動輸入。</i></small>"; return [];
+            } finally { optionButtons.classList.remove('loading'); setUIEnabled(true); }
+        }
+
+        async function fetchAndShowOptions(step) {
+             optionButtons.innerHTML = ''; optionButtons.style.borderTop = 'none';
+             const context = { subject: getData("教學主題", ""), goalKeyword: generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "" };
+             let opts = [];
+             if (step === 0) { opts = suggestionMap.subjects; }
+             else if (step === 5) { opts = suggestionMap.tones; }
+             else if (STEPS_REQUIRING_AI.includes(step) && apiAvailable) { opts = await getDynamicSuggestions(step, context); }
+             else { console.log(`No suggestions/AI for step ${step}.`); }
+
+             if (opts.length > 0) {
+                 optionButtons.style.borderTop = '1px dashed var(--border-color)';
+                 opts.forEach(option => { const btn = document.createElement('button'); btn.classList.add('option-btn'); btn.textContent = option; btn.onclick = () => { if (!isWaitingForAI) { processUserInput(option); } }; optionButtons.appendChild(btn); });
+             } else if (step < TOTAL_STEPS && !optionButtons.innerHTML.includes('失敗')) { optionButtons.innerHTML = "<small><i>（請直接在上方輸入框輸入您的回答）</i></small>"; }
+             if (!STEPS_REQUIRING_AI.includes(step) || !apiAvailable) { setUIEnabled(true); }
+        }
+
+        function processUserInput(userMessageFromButton = null) {
+            if (isWaitingForAI) return; const messageText = userMessageFromButton || userInput.value.trim();
+            if (!messageText && currentStep < exampleAnswers.length) { const exampleMessage = exampleAnswers[currentStep]; appendMessage('user', `<i>(使用範例: ${exampleMessage})</i>`); conversationHistory.push({ sender: 'user', message: exampleMessage }); userInput.value = ''; optionButtons.innerHTML = ''; optionButtons.style.borderTop = 'none'; setUIEnabled(false); processBotResponse(exampleMessage); return; }
+            else if (!messageText) { appendMessage('bot', '請輸入您的回答，或點選建議按鈕喔！'); userInput.focus(); return; }
+            appendMessage('user', messageText); conversationHistory.push({ sender: 'user', message: messageText }); userInput.value = ''; optionButtons.innerHTML = ''; optionButtons.style.borderTop = 'none'; setUIEnabled(false); processBotResponse(messageText);
+        }
+
+        function processBotResponse(userReply) {
+            updateGeneratedData(currentStep, userReply); currentStep++; updateProgressIndicator();
+            if (currentStep < TOTAL_STEPS) {
+                let nextQuestion = questions[currentStep]; const goalKeyword = generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "該主題"; nextQuestion = nextQuestion.replace('{goal}', `<b>${goalKeyword}</b>`);
+                showTypingIndicator();
+                setTimeout(() => { hideTypingIndicator(); appendMessage('bot', nextQuestion); chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' }); fetchAndShowOptions(currentStep); }, 800 + Math.random() * 300);
+            } else {
+                showTypingIndicator();
+                setTimeout(() => { hideTypingIndicator(); appendMessage('bot', '太神啦！所有問題都回答完畢。我正在為您整理最終的行為指示...'); setUIEnabled(false); displayGeneratedOutput(); setUIEnabled(true); chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' }); }, 1000);
+            }
+        }
+
+        function updateGeneratedData(step, reply) {
+             const subject = getData("教學主題", "課程"); const goalKeyword = (step === 1) ? reply : (getData("教學目標", "").split('「')[1]?.split('」')[0] || "核心概念");
+             switch (step) {
+                 case 0: generatedData["教學主題"] = reply; generatedData["學習單"]["名稱"] = `${reply} 學習單`; break;
+                 case 1: generatedData["教學目標"] = `學生能夠理解並掌握 ${subject} 中的「${reply}」相關知識與技能，並能初步應用。`; generatedData["學習單"]["名稱"] = `${subject} - ${reply} 學習單`; break;
+                 case 2: generatedData["行為指示"]["名稱"] = reply; break;
+                 case 3: generatedData["應用類型"] = reply; break;
+                 case 4: generatedData["行為指示"]["原始角色"] = reply; break;
+                 case 5: generatedData["行為指示"]["原始語氣"] = reply; break;
+                 case 6:
+                     const chatbotName = getData("行為指示.名稱", "Chatbot"); const exerciseTask = reply; const botRole = getData("行為指示.原始角色", "一位助手"); const botTone = getData("行為指示.原始語氣", "預設"); const appType = getData("應用類型", "互動教學");
+                     generatedData["行為指示"]["角色與任務"] = `扮演一位 **${botRole}**，一位充滿熱情的 ${subject} 嚮導。\n主要任務是利用 **${appType}** 的方式，引導學生深入理解與練習「${goalKeyword}」，並激發他們對 ${subject} 的學習興趣與信心。`;
+                     generatedData["行為指示"]["互動邏輯"] = `
+1.  **開場與介紹**: 以 ${botTone} 的語氣打招呼，介紹自己是 ${chatbotName}，說明本次學習主題為「${goalKeyword}」。
+2.  **概念導入**: 簡潔說明「${goalKeyword}」的核心概念，可搭配 ${appType.includes("範例") || appType.includes("示範") ? "簡單範例" : "提問"} 確認學生起始理解程度。
+3.  **任務指派**: 清晰說明練習任務：「${exerciseTask}」，確保學生了解目標。
+4.  **互動與引導**: 在學生執行任務過程中，根據 ${appType} 提供協助（如：${appType.includes("步驟") ? "拆解步驟、提示下一步" : appType.includes("問答") ? "提出引導性問題" : "提供相關資訊或工具"}）。遇到困難時，給予 ${botTone.includes("耐心") || botTone.includes("鼓勵") ? "耐心引導與鼓勵" : "提示或備選方案"}。
+5.  **回饋與評估**: 針對學生的回答或任務成果，依據 Rubric 提供具體、有建設性的回饋。肯定學生的努力與進步。
+6.  **總結與延伸**: 簡要回顧學習重點，鼓勵學生思考如何將「${goalKeyword}」應用於其他情境，並預告下次學習內容或資源。`;
+                     generatedData["行為指示"]["語言風格"] = `主要以 **${botTone}** 的語氣與學生互動。\n- 在說明概念與指派任務時，力求清晰簡潔。\n- 在學生遇到困難時，展現更多的 **${botTone.includes("耐心") ? "耐心" : botTone.includes("鼓勵") ? "鼓勵" : botTone.includes("專業") ? "專業引導" : "同理心"}**。\n- 在學生展現理解或完成任務時，給予 **${botTone.includes("活潑") ? "活潑熱情" : botTone.includes("鼓勵") ? "真誠鼓勵" : "肯定性"}** 的回饋。\n- 避免使用過於複雜或抽象的術語，除非進行解釋。`;
+                     generatedData["行為指示"]["對話範例"] = `
+*   **開場**: "哈囉！我是 ${chatbotName}，你的 ${subject} 學習夥伴！準備好一起來探索有趣的「${goalKeyword}」了嗎？"
+*   **概念說明**: "那麼，「${goalKeyword}」其實就是指...（簡要解釋）。你之前有聽過或接觸過嗎？"
+*   **任務指派**: "接下來，我們來試試看這個練習：「${exerciseTask}」。目標是讓你實際應用剛剛學到的概念喔！"
+*   **引導 (學生卡關)**: "嗯，這裡好像有點卡住了？沒關係，要不要試著從...角度想想看？或者我給你一個小提示？ (${botTone} 語氣)"
+*   **回饋 (學生答對)**: "沒錯！你掌握到「${goalKeyword}」的要點了，這個部分做得很好！(${botTone} 語氣)"
+*   **回饋 (任務完成)**: "太棒了！你成功完成了「${exerciseTask}」！從你的成果來看，在...方面表現得很不錯。(${botTone} 語氣)"
+*   **總結**: "今天我們一起學習了「${goalKeyword}」，你表現得很棒！想想看，這個概念/技能未來可以用在什麼地方呢？"`;
+                     generatedData["行為指示"]["限制與邊界"] = `
+*   我的主要專長是 **${subject}** 中的「${goalKeyword}」教學，可能無法深入回答其他不相關主題的問題。
+*   我會盡力提供正確的資訊，但我的知識可能不是最即時的，若有疑問請對照課本或詢問老師。
+*   請以友善、尊重的態度與我互動，讓我們一起愉快地學習！`;
+                     generatedData["學習單"]["問題1"] = `請用你自己的話，簡要說明你所理解的「${goalKeyword}」是什麼？（至少 30 字）`;
+                     generatedData["學習單"]["問題2"] = `請描述你完成練習任務「${exerciseTask}」的主要步驟。過程中遇到了哪些困難？你是如何克服的？`;
+                     generatedData["學習單"]["問題3"] = `你認為理解「${goalKeyword}」對於學習 ${subject} 為何重要？請舉一個具體的例子說明。`;
+                     generatedData["學習單"]["反思"] = `在這次透過 ${chatbotName} 學習「${goalKeyword}」的過程中，你最大的收穫是什麼？你覺得未來可以在哪些地方應用這個概念/技能？`;
+                     generatedData["評分量表"] = generateRubricTable(goalKeyword, exerciseTask);
+                     break;
+             }
+             console.log("Updated generatedData:", generatedData);
+        }
+
+        // --- Output Generation Functions ---
+        function generateRubricTable(goal, exercise) {
+             const displayGoal = goal || "核心概念"; const displayExercise = exercise || "練習任務";
+             return `<table class="output-table"><thead><tr><th>評分項目</th><th>優秀 (3分)</th><th>良好 (2分)</th><th>基礎 (1分)</th><th>待加強 (0分)</th></tr></thead><tbody><tr><td>「${displayGoal}」概念理解</td><td>能清晰、準確地解釋概念，並能舉例說明或連結相關知識。</td><td>能大致說明主要概念，但部分細節或連結不夠清晰/完整。</td><td>對概念有初步認識，但理解模糊或有誤，需要提示才能說明。</td><td>無法說明概念，或理解有嚴重錯誤。</td></tr><tr><td>互動參與度</td><td>積極回應 Chatbot 的提問與引導，能主動提問釐清疑問或延伸思考。</td><td>能回應大部分提問與引導，偶爾需要提示，較少主動提問。</td><td>回應被動、簡略，對引導的回應有限，不太主動參與。</td><td>幾乎不回應或答非所問。</td></tr><tr><td>練習任務「${displayExercise}」完成度</td><td>能獨立、正確且完整地完成任務，成果符合要求。</td><td>完成大部分任務，符合主要要求，但有少許錯誤或遺漏。</td><td>嘗試完成任務，但有明顯錯誤、遺漏，或僅完成部分內容。</td><td>未能完成任務，或成果嚴重偏離任務要求。</td></tr><tr><td>學習反思與應用</td><td>能具體、深入地反思學習過程與收穫，並思考未來可能的應用情境。</td><td>能簡單反思學習內容，大致了解概念的用途。</td><td>反思內容較表面或籠統，對應用的思考不清晰。</td><td>未能有效反思，或無法說明學習的意義。</td></tr></tbody></table>`;
+        }
+        function formatForMarkdown(text) { let escapedText = text.replace(/([*_`])/g, '\\$1'); escapedText = escapedText.replace(/\n(\d+\.\s)/g, '\n$1'); escapedText = escapedText.replace(/\n([*\-]\s)/g, '\n$1'); escapedText = escapedText.replace(/\n(?!\n|\d+\.\s|[*\-]\s)/g, '\n\n*   '); return escapedText; }
+        function generateMarkdownOutput(goalKeyword, exerciseTask) {
+             const mdData = (path, dv = "*未提供*") => { let value = getData(path, dv); if (typeof value === 'string') { value = value.replace(/\|/g, '\\|').replace(/</g, '<').replace(/>/g, '>'); } return value; };
+             const dg = goalKeyword || "核心概念"; const de = exerciseTask || "練習任務";
+             const roleTaskMd = formatForMarkdown(mdData("行為指示.角色與任務")); const logicMd = formatForMarkdown(mdData("行為指示.互動邏輯")); const styleMd = formatForMarkdown(mdData("行為指示.語言風格")); const examplesMd = formatForMarkdown(mdData("行為指示.對話範例")); const limitsMd = formatForMarkdown(mdData("行為指示.限制與邊界"));
+             const worksheetQ1 = formatForMarkdown(mdData("學習單.問題1")); const worksheetQ2 = formatForMarkdown(mdData("學習單.問題2")); const worksheetQ3 = formatForMarkdown(mdData("學習單.問題3")); const worksheetReflect = formatForMarkdown(mdData("學習單.反思"));
+             return `# ChatBot 教學計畫: ${mdData("行為指示.名稱")}\n\n## 1. 教學主題\n${mdData("教學主題")}\n\n## 2. 教學目標\n${mdData("教學目標")}\n\n## 3. 應用類型\n${mdData("應用類型")}\n\n## 4. Chatbot 行為指示\n\n*   **名稱:** ${mdData("行為指示.名稱")}\n*   **語言:** ${mdData("行為指示.語言設定", "繁體中文")}\n*   **角色與任務:**\n    ${roleTaskMd}\n*   **互動邏輯:**\n    ${logicMd}\n*   **語言風格:**\n    ${styleMd}\n*   **對話範例:**\n    ${examplesMd}\n*   **限制與邊界:**\n    ${limitsMd}\n\n## 5. 學習單 (${mdData("學習單.名稱", '未命名')})\n\n*   **問題1:** ${worksheetQ1}\n*   **問題2:** ${worksheetQ2}\n*   **問題3:** ${worksheetQ3}\n*   **反思:** ${worksheetReflect}\n\n## 6. Rubric 評分量表\n\n| 評分項目                         | 優秀 (3分)                               | 良好 (2分)                             | 基礎 (1分)                               | 待加強 (0分)                       |\n| :------------------------------- | :--------------------------------------- | :------------------------------------- | :--------------------------------------- | :------------------------------- |\n| **「${dg}」概念理解**         | 能清晰、準確地解釋概念，並能舉例說明或連結相關知識。 | 能大致說明主要概念，但部分細節或連結不夠清晰/完整。 | 對概念有初步認識，但理解模糊或有誤，需要提示才能說明。 | 無法說明概念，或理解有嚴重錯誤。     |\n| **互動參與度**                   | 積極回應 Chatbot 的提問與引導，能主動提問釐清疑問或延伸思考。 | 能回應大部分提問與引導，偶爾需要提示，較少主動提問。   | 回應被動、簡略，對引導的回應有限，不太主動參與。     | 幾乎不回應或答非所問。             |\n| **練習任務「${de}」完成度** | 能獨立、正確且完整地完成任務，成果符合要求。       | 完成大部分任務，符合主要要求，但有少許錯誤或遺漏。   | 嘗試完成任務，但有明顯錯誤、遺漏，或僅完成部分內容。   | 未能完成任務，或成果嚴重偏離任務要求。 |\n| **學習反思與應用**               | 能具體、深入地反思學習過程與收穫，並思考未來可能的應用情境。 | 能簡單反思學習內容，大致了解概念的用途。           | 反思內容較表面或籠統，對應用的思考不清晰。           | 未能有效反思，或無法說明學習的意義。 |\n\n`;
+        }
+        function generateWordContent(chatbotName, goalKeyword, exerciseTask) {
+            const wordData = (path, dv = "<em>未提供</em>") => { const v = getData(path, dv); return typeof v === 'string' ? v.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/\n/g, '<br />') : v; };
+            const dg = goalKeyword || "核心概念"; const de = exerciseTask || "練習任務"; const rubricTableHtml = generatedData["評分量表"] || "<p><em>評分量表生成失敗。</em></p>";
+            // Added improved styles for Word export
+            return `<!DOCTYPE html><html lang="zh-TW"><head><meta charset='UTF-8'><title>ChatBot 教學計畫: ${chatbotName || '未命名'}</title><style>body{font-family:'Arial','Noto Sans TC',sans-serif;line-height:1.6;margin:30px;color:#333;}h1,h2,h3{color:#005A9C;margin:0 0 15px 0;}h1{text-align:center;margin-bottom:25px;font-size:1.5em;}h2{border-bottom:1px solid #00A9E0;padding-bottom:6px;margin-top:30px;font-size:1.3em;}h3{color:#00A9E0;margin-top:20px;font-size:1.1em;}ul{list-style:none;padding-left:0;}li{margin-bottom:10px;padding-left:1.5em;position:relative;}li::before{content:"•";color:#00A9E0;position:absolute;left:0;top:1px;font-weight:bold;}strong{font-weight:bold;color:#005A9C;}table{border-collapse:collapse;width:100%;margin-top:15px;border:1px solid #B0C4DE;font-size:0.9em;}th,td{border:1px solid #B0C4DE;padding:8px 10px;text-align:left;vertical-align:top;}th{background-color:#D6EAF8;font-weight:bold;text-align:center;}em{font-style:italic;color:#555;} p {margin: 0 0 10px 0;} li > strong {display: inline-block; margin-bottom: 3px;}</style></head><body><h1>ChatBot 教學計畫: ${wordData("行為指示.名稱", '未命名')}</h1><h2>1. 教學主題</h2><p>${wordData("教學主題")}</p><h2>2. 教學目標</h2><p>${wordData("教學目標")}</p><h2>3. 應用類型</h2><p>${wordData("應用類型")}</p><h2>4. Chatbot 行為指示</h2><ul><li><strong>名稱：</strong> ${wordData("行為指示.名稱")}</li><li><strong>語言：</strong> ${wordData("行為指示.語言設定", "繁體中文")}</li><li><strong>角色與任務：</strong><br />${wordData("行為指示.角色與任務")}</li><li><strong>互動邏輯：</strong><br />${wordData("行為指示.互動邏輯")}</li><li><strong>語言風格：</strong><br />${wordData("行為指示.語言風格")}</li><li><strong>對話範例：</strong><br />${wordData("行為指示.對話範例")}</li><li><strong>限制與邊界：</strong><br />${wordData("行為指示.限制與邊界")}</li></ul><h2>5. 學習單 (${wordData("學習單.名稱", '未命名')})</h2><ul><li><strong>問題1：</strong> ${wordData("學習單.問題1")}</li><li><strong>問題2：</strong> ${wordData("學習單.問題2")}</li><li><strong>問題3：</strong> ${wordData("學習單.問題3")}</li><li><strong>反思：</strong> ${wordData("學習單.反思")}</li></ul><h2>6. Rubric 評分量表</h2>${rubricTableHtml}</body></html>`;
+        }
+        function displayGeneratedOutput() {
+            outputSection.style.display = 'block'; const goalKeyword = generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "核心概念"; const exerciseTask = generatedData["學習單"]["問題2"]?.split('「')[1]?.split('」')[0] || "練習任務"; outputContent.innerHTML = '';
+            const sections = [ /* ... Section data remains the same ... */
+                 { id: 'output-theme', title: '1. 教學主題', icon: 'fas fa-book-open', content: `<p><span>${getData("教學主題")}</span></p>` },
+                 { id: 'output-goal', title: '2. 教學目標', icon: 'fas fa-bullseye', content: `<p><span>${getData("教學目標")}</span></p>` },
+                 { id: 'output-type', title: '3. 應用類型', icon: 'fas fa-cogs', content: `<p><span>${getData("應用類型")}</span></p>` },
+                 { id: 'output-instructions', title: '4. Chatbot 行為指示', icon: 'fas fa-robot', content: `<ul><li><i class="fas fa-signature"></i><strong>名稱：</strong><span>${getData("行為指示.名稱")}</span></li><li><i class="fas fa-language"></i><strong>語言：</strong><span>${getData("行為指示.語言設定", "繁體中文")}</span></li><li><i class="fas fa-user-tie"></i><strong>角色與任務：</strong><span>${getData("行為指示.角色與任務")}</span></li><li><i class="fas fa-sitemap"></i><strong>互動邏輯：</strong><span>${getData("行為指示.互動邏輯")}</span></li><li><i class="fas fa-comments"></i><strong>語言風格：</strong><span>${getData("行為指示.語言風格")}</span></li><li><i class="fas fa-comment-dots"></i><strong>對話範例：</strong><span>${getData("行為指示.對話範例")}</span></li><li><i class="fas fa-ban"></i><strong>限制與邊界：</strong><span>${getData("行為指示.限制與邊界")}</span></li></ul>` },
+                 { id: 'output-worksheet', title: `5. 學習單 (${getData("學習單.名稱", '未命名')})`, icon: 'fas fa-file-alt', content: `<ul class="structured-list"><li><strong>問題1：</strong><span>${getData("學習單.問題1")}</span></li><li><strong>問題2：</strong><span>${getData("學習單.問題2")}</span></li><li><strong>問題3：</strong><span>${getData("學習單.問題3")}</span></li><li><strong>反思：</strong><span>${getData("學習單.反思")}</span></li></ul>` },
+                 { id: 'output-rubric', title: '6. Rubric 評分量表', icon: 'fas fa-clipboard-check', content: generatedData["評分量表"] || `<p><em>評分量表生成失敗。</em></p>` }
+            ];
+            sections.forEach(sec => { const div = document.createElement('div'); div.className = 'output-content-section'; div.id = sec.id; div.innerHTML = `<h3><i class="${sec.icon}"></i> ${sec.title}</h3>${sec.content}`; outputContent.appendChild(div); });
+            const markdownOutput = generateMarkdownOutput(goalKeyword, exerciseTask); const wordFileContent = generateWordContent(getData("行為指示.名稱", '未命名'), goalKeyword, exerciseTask); const wordFileName = `教學ChatBot行為指示-${getData("行為指示.名稱", "未命名")}.doc`;
+            copyButton.onclick = async () => { /* ... Copy logic remains the same ... */
+                 try { await navigator.clipboard.writeText(markdownOutput); copyStatus.textContent = '已複製！'; copyStatus.style.color = 'var(--success-color)'; setTimeout(() => { copyStatus.textContent = ''; }, 2000); } catch (err) { console.error('無法複製文字: ', err); copyStatus.textContent = '複製失敗'; copyStatus.style.color = 'var(--error-color)'; const textArea = document.createElement("textarea"); textArea.value = markdownOutput; textArea.style.position = "fixed"; textArea.style.left = "-9999px"; document.body.appendChild(textArea); textArea.select(); try { document.execCommand('copy'); copyStatus.textContent = '已複製 (Fallback)!'; copyStatus.style.color = 'var(--success-color)'; setTimeout(() => { copyStatus.textContent = ''; }, 2000); } catch (execErr) { copyStatus.textContent = '複製失敗'; copyStatus.style.color = 'var(--error-color)'; console.error('execCommand 複製失敗: ', execErr); } document.body.removeChild(textArea); }
+            };
+            downloadButton.onclick = () => { /* ... Download logic remains the same ... */
+                 try { const blob = new Blob(['\ufeff', wordFileContent], { type: 'application/msword;charset=utf-8' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = wordFileName; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href); } catch (error) { console.error("下載失敗:", error); alert("無法產生下載文件，請檢查瀏覽器權限或稍後再試。"); }
+            };
+            setTimeout(() => { outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+         }
+
+        // --- Reset Function ---
+        function resetConversation() {
+            console.log("Resetting conversation..."); conversationHistory = []; currentStep = 0;
+            generatedData = { "教學主題": "", "教學目標": "", "應用類型": "", "行為指示": { "名稱": "", "語言設定": "繁體中文", "原始角色": "", "原始語氣": "", "角色與任務": "", "互動邏輯": "", "語言風格": "", "對話範例": "", "限制與邊界": "" }, "學習單": { "名稱": "", "問題1": "", "問題2": "", "問題3": "", "反思": "" }, "評分量表": "" };
+            chatLog.innerHTML = `<div class="message bot-message" id="typing-indicator" style="display: none;"><div class="bot-avatar"><div class="face"><div class="eye eye-left"><div class="pupil"></div></div><div class="eye eye-right"><div class="pupil"></div></div><div class="mouth"></div></div></div><div class="bubble bot-bubble"><div class="typing-indicator-container"><span></span><span></span><span></span></div></div></div>`;
+            hideTypingIndicator(); outputSection.style.display = 'none'; outputContent.innerHTML = ""; copyStatus.textContent = ''; optionButtons.innerHTML = ''; optionButtons.style.borderTop = 'none'; setUIEnabled(false);
+            appendMessage('bot', '您好！我是教學ChatBot行為指示生成神助手，正在準備中...'); updateProgressIndicator();
+             if (!apiAvailable) { setTimeout(() => { const reason = (API_KEY && API_KEY !== "YOUR_API_KEY_HERE") ? "初始化失敗" : "未設定或金鑰無效"; appendMessage('bot', `<b style='color: var(--error-color);'>警告：</b> Gemini API ${reason}。AI 建議功能將無法使用，部分步驟您需要自行輸入所有回答。`); chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' }); }, 300); }
+            setTimeout(() => { appendMessage('bot', questions[0]); fetchAndShowOptions(0); userInput.value = ''; userInput.focus(); chatLog.scrollTo({ top: chatLog.scrollHeight, behavior: 'smooth' }); }, apiAvailable ? 800 : 1200);
+        }
+
+        // --- Event Listeners ---
+        sendButton.addEventListener('click', () => processUserInput());
+        userInput.addEventListener('keypress', function(event) { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); processUserInput(); } });
+        resetButton.addEventListener('click', resetConversation);
+
+        // --- Initial Start ---
+        resetConversation(); // Start the conversation when the page loads
+
+    </script>
+
+</body>
+</html>
