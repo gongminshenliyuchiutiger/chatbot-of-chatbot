@@ -58,7 +58,7 @@
     h2 { font-size: 1.6em; margin-bottom: 15px; border-bottom: 2px solid var(--secondary-color); padding-bottom: 8px; } h3 { font-size: 1.3em; margin-bottom: 12px; color: var(--secondary-color); font-weight: 600;}
     p { margin: 0 0 12px 0; color: var(--text-light); } ul { padding-left: 20px; list-style: none; } li { margin-bottom: 8px; }
     button { font-family: var(--font-family); cursor: pointer; border: none; border-radius: var(--border-radius); padding: 10px 15px; transition: all 0.2s ease-in-out; } button:disabled { cursor: not-allowed; opacity: 0.7; }
-    input[type="text"] { font-family: var(--font-family); padding: 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1em; } input[type="text"]:disabled { background-color: #E9ECEF; }
+    input[type="text"], input[type="password"] { font-family: var(--font-family); padding: 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1em; } input[type="text"]:disabled, input[type="password"]:disabled { background-color: #E9ECEF; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .container { background: var(--container-bg); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); margin-bottom: 25px; max-width: 850px; margin-left: auto; margin-right: auto; }
     #progress-indicator { text-align: center; color: var(--text-light); font-size: 0.9em; margin-bottom: 20px; background-color: var(--bot-bubble-bg); padding: 5px 10px; border-radius: 4px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
@@ -103,14 +103,11 @@
         padding: 10px; border-radius: var(--border-radius); border-left: 4px solid var(--primary-color);
         font-size: 0.9em; margin-bottom: 10px; background-color: rgba(0, 90, 156, 0.05); color: var(--text-color);
     }
-    .api-key-section .info-box.warning { border-color: var(--accent-color); background-color: rgba(255, 196, 37, 0.1); }
     .api-key-label-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .api-key-label-wrapper label { font-weight: 600; color: var(--primary-color); }
     .api-options { display: flex; align-items: center; gap: 12px; }
     .api-options .api-tutorial-link { color: var(--secondary-color); text-decoration: none; font-size: 0.9em; cursor: pointer; font-weight: 500;}
     .api-options .api-tutorial-link:hover { text-decoration: underline; }
-    .api-options #enableBackupKey { color: var(--text-light); font-size: 1rem; transition: color 0.2s, transform 0.2s; text-decoration: none; }
-    .api-options #enableBackupKey:hover { color: var(--primary-color); transform: rotate(45deg); }
     #api-key-input { width: 100%; box-sizing: border-box; }
     
     /* --- Input Area --- */
@@ -222,12 +219,9 @@
                     <label for="api-key-input">您的 API 金鑰 (必填)</label>
                     <div class="api-options">
                         <a href="#" class="api-tutorial-link">(如何取得？)</a>
-                        <a href="#" id="enableBackupKey" title="無法取得金鑰？點此啟用備用金鑰">
-                            <i class="fas fa-cog"></i>
-                        </a>
                     </div>
                 </div>
-                <input type="text" id="api-key-input" placeholder="請貼上您從 Google AI Studio 取得的 API 金鑰">
+                <input type="password" autocomplete="off" id="api-key-input" placeholder="請貼上您從 Google AI Studio 取得的 API 金鑰">
             </div>
         
             <!-- Input Area -->
@@ -296,15 +290,12 @@
             apiKeyInput: document.getElementById('api-key-input'),
             apiInfoBox: document.getElementById('api-info-box'),
             apiInfoText: document.getElementById('api-info-text'),
-            enableBackupKey: document.getElementById('enableBackupKey'),
             apiKeyModal: document.getElementById('api-key-modal'),
             openApiKeyModalLink: document.querySelector('.api-tutorial-link')
         };
         
-        const BACKUP_API_KEY = "AIzaSyCerlnUOTQ4-5K6VRpugpRI1URcOF6ai2w";
         let genAI = null;
         let model = null;
-        let isBackupKeyEnabled = false;
 
         const generationConfig = { temperature: 0.7, topK: 1, topP: 1, maxOutputTokens: 250 };
         const safetySettings = [
@@ -339,7 +330,6 @@
         const exampleAnswers = [ "美術", "素描光影表現", "光影小畫家", "步驟式引導示範", "繪畫魔法師", "親切耐心", "畫出一個具有明暗光影的球體" ];
 
         const getActiveApiKey = () => {
-            if (isBackupKeyEnabled) return BACKUP_API_KEY;
             return dom.apiKeyInput.value.trim();
         };
 
@@ -391,15 +381,12 @@
             }
             const bubble = document.createElement('div'); bubble.classList.add('bubble', `${sender}-bubble`); bubble.innerHTML = message; messageDiv.appendChild(bubble);
             
-            // --- FIX START ---
             const typingElem = dom.typingIndicator;
-            // Check if typingIndicator is a child of chatLog before using insertBefore
             if (typingElem && dom.chatLog.contains(typingElem)) {
                 dom.chatLog.insertBefore(messageDiv, typingElem);
             } else {
                 dom.chatLog.appendChild(messageDiv);
             }
-            // --- FIX END ---
         }
 
         async function getDynamicSuggestions(step, context) {
@@ -572,7 +559,6 @@
             currentStep = 0;
             generatedData = { "教學主題": "", "教學目標": "", "應用類型": "", "行為指示": { "名稱": "", "語言設定": "繁體中文", "原始角色": "", "原始語氣": "", "角色與任務": "", "互動邏輯": "", "語言風格": "", "對話範例": "", "限制與邊界": "" }, "學習單": { "名稱": "", "問題1": "", "問題2": "", "問題3": "", "反思": "" }, "評分量表": "" };
             
-            // Clear and re-add the typing indicator structure
             dom.chatLog.innerHTML = '';
             const typingElem = document.createElement('div');
             typingElem.className = 'message bot-message';
@@ -589,13 +575,11 @@
             dom.optionButtons.style.borderTop = 'none';
             setUIEnabled(false);
             
-            isBackupKeyEnabled = false;
             dom.apiKeyInput.value = '';
             dom.apiKeyInput.disabled = false;
             dom.apiKeyInput.placeholder = '請貼上您從 Google AI Studio 取得的 API 金鑰';
             dom.apiInfoBox.classList.remove('warning');
             dom.apiInfoText.textContent = '請提供您的 Google Gemini API 金鑰，以啟用 AI 生成建議功能。';
-            dom.enableBackupKey.style.display = 'inline-block';
 
             appendMessage('bot', '您好！我是教學ChatBot行為指示生成神助手，正在準備中...');
             updateProgressIndicator();
@@ -614,18 +598,6 @@
         dom.resetButton.addEventListener('click', resetConversation);
         dom.openApiKeyModalLink.addEventListener('click', (e) => { e.preventDefault(); dom.apiKeyModal.style.display = 'flex'; });
         dom.apiKeyModal.addEventListener('click', (e) => { if (e.target === dom.apiKeyModal || e.target.classList.contains('modal-close')) { dom.apiKeyModal.style.display = 'none'; } });
-        dom.enableBackupKey.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (confirm("這將啟用系統內建的備用金鑰進行 AI 建議。\n\n此金鑰為多人共用，尖峰時段可能不穩定或無法使用。\n強烈建議您使用自己的免費金鑰以獲得最佳體驗。\n\n確定要啟用備用金鑰嗎？")) {
-                isBackupKeyEnabled = true;
-                dom.apiKeyInput.value = '已啟用系統備用金鑰';
-                dom.apiKeyInput.disabled = true;
-                dom.apiInfoBox.classList.add('warning');
-                dom.apiInfoText.textContent = '已啟用系統備用金鑰。此金鑰為多人共用，可能不穩定。若要使用自己的金鑰，請點擊「重置」按鈕。';
-                dom.enableBackupKey.style.display = 'none';
-                alert('系統備用金鑰已啟用。');
-            }
-        });
         
         resetConversation();
     </script>
