@@ -87,30 +87,15 @@
     .typing-indicator-container span { height: 8px; width: 8px; margin: 0 2px; background-color: var(--text-light); border-radius: 50%; display: inline-block; animation: typing 1s infinite ease-in-out; }
     .typing-indicator-container span:nth-child(1) { animation-delay: 0s; } .typing-indicator-container span:nth-child(2) { animation-delay: 0.1s; } .typing-indicator-container span:nth-child(3) { animation-delay: 0.2s; }
     @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
-
-    /* --- Controls Area --- */
-    .controls-wrapper {
-        background: #fdfdfd;
-        border: 1px solid var(--border-color);
-        border-top: none;
-        padding: 15px;
-        border-radius: 0 0 var(--border-radius) var(--border-radius);
-    }
-    
-    /* --- API Key Section --- */
+    .controls-wrapper { background: #fdfdfd; border: 1px solid var(--border-color); border-top: none; padding: 15px; border-radius: 0 0 var(--border-radius) var(--border-radius); }
     .api-key-section { margin-bottom: 15px; }
-    .api-key-section .info-box {
-        padding: 10px; border-radius: var(--border-radius); border-left: 4px solid var(--primary-color);
-        font-size: 0.9em; margin-bottom: 10px; background-color: rgba(0, 90, 156, 0.05); color: var(--text-color);
-    }
+    .api-key-section .info-box { padding: 10px; border-radius: var(--border-radius); border-left: 4px solid var(--primary-color); font-size: 0.9em; margin-bottom: 10px; background-color: rgba(0, 90, 156, 0.05); color: var(--text-color); }
     .api-key-label-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .api-key-label-wrapper label { font-weight: 600; color: var(--primary-color); }
     .api-options { display: flex; align-items: center; gap: 12px; }
     .api-options .api-tutorial-link { color: var(--secondary-color); text-decoration: none; font-size: 0.9em; cursor: pointer; font-weight: 500;}
     .api-options .api-tutorial-link:hover { text-decoration: underline; }
     #api-key-input { width: 100%; box-sizing: border-box; }
-    
-    /* --- Input Area --- */
     .input-area { display: flex; gap: 12px; align-items: center; background: var(--input-bg); padding: 12px; border-radius: var(--border-radius); border: 1px solid var(--border-color); }
     #user-input { flex-grow: 1; border: 1px solid var(--border-color); background: #fff; }
     #user-input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(0, 90, 156, 0.2); outline: none; }
@@ -121,8 +106,6 @@
     .option-buttons.loading::before { content: "AI 正在產生建議..."; font-style: italic; color: var(--text-light); font-size: 0.9em; width: 100%; }
     .option-btn { background: var(--button-option-bg); color: #fff; font-size: 0.9em; padding: 8px 14px; box-shadow: none; border: 1px solid transparent; }
     .option-btn:hover { background: var(--button-option-hover-bg); transform: translateY(-1px); }
-
-    /* --- Output Section --- */
     .output-section { text-align: left; display: none; }
     .output-section h2 { text-align: center; color: var(--primary-color); margin-bottom: 25px; }
     .output-content-section { background: #F8F9FA; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 20px; margin-bottom: 25px; box-shadow: var(--box-shadow-light); }
@@ -145,15 +128,12 @@
     .output-table td { background: #fff; color: var(--text-light); font-size: 0.9em; }
     .output-table tr:nth-child(even) td { background: #F4F8FB; }
     .output-table i { display: none; }
-
     .action-buttons { margin-top: 20px; display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap; padding-top: 15px; border-top: 1px solid var(--border-color); }
     .action-btn { padding: 10px 20px; font-size: 0.95em; font-weight: 500; color: #fff; }
     #copy-button { background-color: var(--button-action-copy-bg); } #copy-button:hover { background-color: var(--button-action-copy-hover-bg); }
     #download-button { background-color: var(--button-action-download-bg); } #download-button:hover { background-color: var(--button-action-download-hover-bg); }
     .copy-status { color: var(--success-color); font-weight: 500; min-height: 1.2em; display: inline-block; padding: 0 10px; }
     .copyright { text-align: center; font-size: 0.8em; color: #888; margin-top: 30px; padding-bottom: 10px; } .copyright i { margin-right: 5px; color: var(--secondary-color); }
-
-    /* --- Modal --- */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; animation: fadeInModal 0.3s; }
     @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
     .modal-content { background: var(--container-bg); padding: 30px; border-radius: var(--border-radius); max-width: 600px; width: 90%; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; }
@@ -163,6 +143,35 @@
     .modal-content code { background-color: var(--input-bg); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
     .modal-content a { color: var(--secondary-color); font-weight: 500; text-decoration: none; }
     .modal-content a:hover { text-decoration: underline; }
+
+    /* --- NEW: Mascot Styles --- */
+    #mascot {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 120px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 999;
+    }
+    #mascot:hover {
+        transform: scale(1.15) rotate(-8deg);
+        animation: mascot-shake 0.5s infinite alternate;
+    }
+    .particle {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1001; /* Above mascot and modal overlay */
+        transition: transform 1s ease-out, opacity 1s ease-out;
+    }
+    @keyframes mascot-shake {
+        0% { transform: scale(1.15) rotate(-8deg); }
+        100% { transform: scale(1.15) rotate(8deg); }
+    }
 
     @media (max-width: 600px) {
         body { padding: 15px; } h1 { font-size: 1.6em; } .container { padding: 15px; } .chat-log { height: calc(100vh - 350px); }
@@ -185,6 +194,13 @@
         .output-table th, .output-table td { padding: 8px; font-size: 0.85em; }
         .action-buttons { gap: 10px; } .action-btn { padding: 9px 16px; font-size: 0.9em; }
         #progress-indicator { font-size: 0.85em; }
+
+        /* NEW: Mascot on mobile */
+        #mascot {
+            width: 80px;
+            bottom: 15px;
+            left: 15px;
+        }
     }
 </style>
 </head>
@@ -194,37 +210,21 @@
 
     <div class="container">
         <div class="chat-log" id="chat-log">
-            <!-- Typing indicator structure -->
             <div class="message bot-message" id="typing-indicator" style="display: none;">
-                 <div class="bot-avatar">
-                     <div class="face">
-                         <div class="eye eye-left"><div class="pupil"></div></div>
-                         <div class="eye eye-right"><div class="pupil"></div></div>
-                         <div class="mouth"></div>
-                     </div>
-                 </div>
-                 <div class="bubble bot-bubble">
-                     <div class="typing-indicator-container"><span></span><span></span><span></span></div>
-                 </div>
+                 <div class="bot-avatar"><div class="face"><div class="eye eye-left"><div class="pupil"></div></div><div class="eye eye-right"><div class="pupil"></div></div><div class="mouth"></div></div></div>
+                 <div class="bubble bot-bubble"><div class="typing-indicator-container"><span></span><span></span><span></span></div></div>
             </div>
         </div>
         
         <div class="controls-wrapper">
-            <!-- API Key Section -->
             <div class="api-key-section">
-                <div class="info-box" id="api-info-box">
-                    <p id="api-info-text">請提供您的 Google Gemini API 金鑰，以啟用 AI 生成建議功能。</p>
-                </div>
+                <div class="info-box" id="api-info-box"><p id="api-info-text">請提供您的 Google Gemini API 金鑰，以啟用 AI 生成建議功能。</p></div>
                 <div class="api-key-label-wrapper">
                     <label for="api-key-input">您的 API 金鑰 (必填)</label>
-                    <div class="api-options">
-                        <a href="#" class="api-tutorial-link">(如何取得？)</a>
-                    </div>
+                    <div class="api-options"><a href="#" class="api-tutorial-link">(如何取得？)</a></div>
                 </div>
                 <input type="password" autocomplete="off" id="api-key-input" placeholder="請貼上您從 Google AI Studio 取得的 API 金鑰">
             </div>
-        
-            <!-- Input Area -->
             <div class="input-area">
                 <input type="text" id="user-input" placeholder="請輸入回答或點選按鈕..." disabled>
                 <div>
@@ -236,7 +236,6 @@
         </div>
     </div>
 
-    <!-- Output Section -->
     <div class="container output-section" id="output-section">
         <h2><i class="fas fa-file-alt"></i> 教學Chatbot行為指示生成結果</h2>
         <div id="output-content"></div>
@@ -247,11 +246,8 @@
         </div>
     </div>
 
-    <div class="copyright">
-        <i class="fas fa-copyright"></i> Copyright © Liyuchiutiger Gongminshen
-    </div>
+    <div class="copyright"><i class="fas fa-copyright"></i> Copyright © Liyuchiutiger Gongminshen</div>
 
-    <!-- Modal for API Key Tutorial -->
     <div class="modal-overlay" id="api-key-modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
@@ -267,6 +263,9 @@
             <p><strong>提醒：</strong>請妥善保管您的 API 金鑰，不要與他人分享。</p>
         </div>
     </div>
+
+    <!-- NEW: Mascot Element -->
+    <img id="mascot" src="image/LiyuChillGuy.svg" alt="LiyuChillGuy Mascot">
 
     <script type="importmap">
       { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
@@ -291,315 +290,85 @@
             apiInfoBox: document.getElementById('api-info-box'),
             apiInfoText: document.getElementById('api-info-text'),
             apiKeyModal: document.getElementById('api-key-modal'),
-            openApiKeyModalLink: document.querySelector('.api-tutorial-link')
+            openApiKeyModalLink: document.querySelector('.api-tutorial-link'),
+            mascot: document.getElementById('mascot') // NEW: Add mascot to DOM object
         };
         
-        let genAI = null;
-        let model = null;
-
+        // --- Existing Chat Logic (no changes needed) ---
+        let genAI = null; let model = null;
         const generationConfig = { temperature: 0.7, topK: 1, topP: 1, maxOutputTokens: 250 };
-        const safetySettings = [
-           { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-           { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-           { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-           { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-        ];
-
-        let conversationHistory = [];
-        let currentStep = 0;
-        let generatedData = {};
-        let isBotTyping = false;
-        let isWaitingForAI = false;
-
-        const questions = [
-            "請問您想教授什麼課程？（可選擇或自行輸入）",
-            "您希望學生學會這個課程中的哪個「具體概念或技能」？",
-            "請為這個專門教「{goal}」的 Chatbot 取一個有趣的名字！",
-            "這個 Chatbot 主要用哪種方式幫助學生學習「{goal}」？",
-            "請選擇一個 Chatbot 的「角色身份」，讓互動更有趣！",
-            "Chatbot 應該使用什麼樣的「語氣」與學生互動？",
-            "為了檢視學習成效，請設計一個跟「{goal}」相關的「練習任務」？"
-        ];
-        const TOTAL_STEPS = questions.length;
-        const STEPS_REQUIRING_AI = [1, 2, 3, 4, 6];
-
-        const suggestionMap = {
-            subjects: [ "國文", "數學", "英文", "物理", "化學", "生物", "地科", "歷史", "地理", "公民與社會", "音樂", "美術", "藝術生活", "生活科技", "資訊科技", "生涯規劃", "生命教育", "家政", "健康與護理", "體育", "全民國防" ],
-            tones: [ "親切耐心", "活潑有趣", "專業嚴謹", "鼓勵引導", "幽默風趣", "循循善誘", "簡潔明瞭", "熱情洋溢", "沉穩可靠", "俏皮機智", "中二病發", "神祕詭譎", "大師開示", "稱兄道弟", "完美閨蜜"]
-        };
+        const safetySettings = [ { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE }, { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE }, { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE }, { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE }, ];
+        let conversationHistory = []; let currentStep = 0; let generatedData = {}; let isBotTyping = false; let isWaitingForAI = false;
+        const questions = [ "請問您想教授什麼課程？（可選擇或自行輸入）", "您希望學生學會這個課程中的哪個「具體概念或技能」？", "請為這個專門教「{goal}」的 Chatbot 取一個有趣的名字！", "這個 Chatbot 主要用哪種方式幫助學生學習「{goal}」？", "請選擇一個 Chatbot 的「角色身份」，讓互動更有趣！", "Chatbot 應該使用什麼樣的「語氣」與學生互動？", "為了檢視學習成效，請設計一個跟「{goal}」相關的「練習任務」？" ];
+        const TOTAL_STEPS = questions.length; const STEPS_REQUIRING_AI = [1, 2, 3, 4, 6];
+        const suggestionMap = { subjects: [ "國文", "數學", "英文", "物理", "化學", "生物", "地科", "歷史", "地理", "公民與社會", "音樂", "美術", "藝術生活", "生活科技", "資訊科技", "生涯規劃", "生命教育", "家政", "健康與護理", "體育", "全民國防" ], tones: [ "親切耐心", "活潑有趣", "專業嚴謹", "鼓勵引導", "幽默風趣", "循循善誘", "簡潔明瞭", "熱情洋溢", "沉穩可靠", "俏皮機智", "中二病發", "神祕詭譎", "大師開示", "稱兄道弟", "完美閨蜜"] };
         const exampleAnswers = [ "美術", "素描光影表現", "光影小畫家", "步驟式引導示範", "繪畫魔法師", "親切耐心", "畫出一個具有明暗光影的球體" ];
-
-        const getActiveApiKey = () => {
-            return dom.apiKeyInput.value.trim();
-        };
-
-        const initializeAI = () => {
-            const apiKey = getActiveApiKey();
-            if (!apiKey) {
-                genAI = null;
-                model = null;
-                return false;
-            }
-            try {
-                if (!genAI || !model || genAI.apiKey !== apiKey) {
-                    genAI = new GoogleGenerativeAI(apiKey);
-                    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-                    console.log("Gemini AI Initialized/Re-initialized Successfully.");
-                }
-                return true;
-            } catch (error) {
-                console.error("Failed to initialize GoogleGenerativeAI:", error);
-                genAI = null;
-                model = null;
-                appendMessage('bot', `<b style='color: var(--error-color);'>警告：</b> 您提供的 API 金鑰無效或初始化失敗。AI 建議功能將無法使用。`);
-                return false;
-            }
-        };
-
-        const getData = (path, defaultValue = "<em>未提供</em>") => {
-             try {
-                 const keys = path.split('.'); let current = generatedData;
-                 for (const key of keys) { if (current === null || typeof current !== 'object' || !(key in current)) { return defaultValue; } current = current[key]; }
-                 return current === "" || current === null || current === undefined ? defaultValue : current;
-             } catch (e) { console.error("Error getting data for path:", path, e); return defaultValue; }
-        };
+        const getActiveApiKey = () => { return dom.apiKeyInput.value.trim(); };
+        const initializeAI = () => { const apiKey = getActiveApiKey(); if (!apiKey) { genAI = null; model = null; return false; } try { if (!genAI || !model || genAI.apiKey !== apiKey) { genAI = new GoogleGenerativeAI(apiKey); model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" }); console.log("Gemini AI Initialized/Re-initialized Successfully."); } return true; } catch (error) { console.error("Failed to initialize GoogleGenerativeAI:", error); genAI = null; model = null; appendMessage('bot', `<b style='color: var(--error-color);'>警告：</b> 您提供的 API 金鑰無效或初始化失敗。AI 建議功能將無法使用。`); return false; } };
+        const getData = (path, defaultValue = "<em>未提供</em>") => { try { const keys = path.split('.'); let current = generatedData; for (const key of keys) { if (current === null || typeof current !== 'object' || !(key in current)) { return defaultValue; } current = current[key]; } return current === "" || current === null || current === undefined ? defaultValue : current; } catch (e) { console.error("Error getting data for path:", path, e); return defaultValue; } };
         function showTypingIndicator() { if (!isBotTyping) { dom.typingIndicator.style.display = 'flex'; isBotTyping = true; dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' }); } }
         function hideTypingIndicator() { if (isBotTyping) { dom.typingIndicator.style.display = 'none'; isBotTyping = false; } }
         function updateProgressIndicator() { if (currentStep < TOTAL_STEPS) { dom.progressIndicator.textContent = `步驟 ${currentStep + 1} / ${TOTAL_STEPS}`; dom.progressIndicator.style.display = 'inline-block'; } else { dom.progressIndicator.style.display = 'none'; } }
         function setUIEnabled(enabled) { dom.userInput.disabled = !enabled; dom.sendButton.disabled = !enabled; dom.optionButtons.querySelectorAll('button').forEach(btn => btn.disabled = !enabled); dom.resetButton.disabled = !enabled; isWaitingForAI = !enabled; }
-
-        function appendMessage(sender, message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', `${sender}-message`);
-            if (sender === 'bot') {
-                const avatar = document.createElement('div'); avatar.classList.add('bot-avatar');
-                const face = document.createElement('div'); face.classList.add('face');
-                const eyeLeft = document.createElement('div'); eyeLeft.classList.add('eye', 'eye-left'); const pupilLeft = document.createElement('div'); pupilLeft.classList.add('pupil'); eyeLeft.appendChild(pupilLeft);
-                const eyeRight = document.createElement('div'); eyeRight.classList.add('eye', 'eye-right'); const pupilRight = document.createElement('div'); pupilRight.classList.add('pupil'); eyeRight.appendChild(pupilRight);
-                const mouth = document.createElement('div'); mouth.classList.add('mouth');
-                face.appendChild(eyeLeft); face.appendChild(eyeRight); face.appendChild(mouth); avatar.appendChild(face); messageDiv.appendChild(avatar);
-            }
-            const bubble = document.createElement('div'); bubble.classList.add('bubble', `${sender}-bubble`); bubble.innerHTML = message; messageDiv.appendChild(bubble);
-            
-            const typingElem = dom.typingIndicator;
-            if (typingElem && dom.chatLog.contains(typingElem)) {
-                dom.chatLog.insertBefore(messageDiv, typingElem);
-            } else {
-                dom.chatLog.appendChild(messageDiv);
-            }
-        }
-
-        async function getDynamicSuggestions(step, context) {
-            if (!initializeAI()) {
-                appendMessage('bot', `<b style='color: var(--error-color);'>無法生成AI建議：</b> 請先提供有效的 API 金鑰。`);
-                return [];
-            }
-            const { subject = "一般主題", goalKeyword = "核心概念" } = context;
-            let prompt = "";
-            const outputFormatInstruction = "請提供最多4個相關的、簡短的建議。請用繁體中文回答。將建議嚴格格式化為一個 JavaScript 陣列字串，例如：`['建議一', '建議二', '建議三', '建議四']`。不要包含任何其他說明文字、註解或 Markdown 標記。";
-
-            switch (step) {
-                case 1: prompt = `針對教學科目「${subject}」，請建議一些學生可以學習的具體概念或技能（約5-10字）。${outputFormatInstruction}`; break;
-                case 2: prompt = `為一個教學聊天機器人取名，它專門教授「${subject}」的「${goalKeyword}」。請提供約4個創意且相關的名稱。${outputFormatInstruction}`; break;
-                case 3: prompt = `一個聊天機器人要教授「${subject}」的「${goalKeyword}」，它可以主要使用哪些互動方式或教學方法？請提供約4個簡短描述。${outputFormatInstruction}`; break;
-                case 4: prompt = `為一個教授「${subject}」科目中「${goalKeyword}」的聊天機器人，建議約4個有趣的角色身份。${outputFormatInstruction}`; break;
-                case 6: prompt = `針對「${subject}」科目中的「${goalKeyword}」，請設計約4個相關的具體練習任務或活動（簡短描述即可）。${outputFormatInstruction}`; break;
-                default: return [];
-            }
-            console.log("Sending prompt to Gemini:", prompt);
-            setUIEnabled(false); dom.optionButtons.innerHTML = ''; dom.optionButtons.classList.add('loading');
-
-            try {
-                const result = await model.generateContent({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig, safetySettings, });
-                const response = result.response;
-                if (!response || !response.candidates || response.candidates.length === 0 || response.candidates[0].finishReason !== 'STOP') {
-                     const reason = response?.candidates?.[0]?.finishReason || "未知";
-                     dom.optionButtons.innerHTML = `<small style='color: var(--error-color);'><i>AI 建議生成失敗 (${reason})，請嘗試不同描述或手動輸入。</i></small>`;
-                     return [];
-                 }
-                const responseText = response.text().trim();
-                const match = responseText.match(/\[\s*(['"].*?['"]\s*,\s*)*(['"].*?['"])\s*\]/);
-                let suggestions = [];
-                if (match && match[0]) {
-                    try { suggestions = JSON.parse(match[0].replace(/'/g, '"')); } catch (e) { /* ignore */ }
-                }
-                if (!Array.isArray(suggestions) || suggestions.length === 0) {
-                     suggestions = responseText.split('\n').map(s => s.replace(/^-?\s*['"`]?/, '').replace(/['"`]?\s*,?$/, '').trim()).filter(s => s && !s.startsWith('[') && !s.endsWith(']'));
-                }
-                return suggestions.slice(0, 4);
-            } catch (error) {
-                console.error("Error calling Gemini API:", error);
-                dom.optionButtons.innerHTML = "<small style='color: var(--error-color);'><i>AI 建議生成失敗，請檢查網路或 API 金鑰。</i></small>"; return [];
-            } finally { dom.optionButtons.classList.remove('loading'); setUIEnabled(true); }
-        }
-
-        async function fetchAndShowOptions(step) {
-             dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none';
-             const context = { subject: getData("教學主題", ""), goalKeyword: generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "" };
-             let opts = [];
-             if (step === 0) { opts = suggestionMap.subjects; }
-             else if (step === 5) { opts = suggestionMap.tones; }
-             else if (STEPS_REQUIRING_AI.includes(step)) { opts = await getDynamicSuggestions(step, context); }
-
-             if (opts.length > 0) {
-                 dom.optionButtons.style.borderTop = '1px dashed var(--border-color)';
-                 opts.forEach(option => { const btn = document.createElement('button'); btn.classList.add('option-btn'); btn.textContent = option; btn.onclick = () => { if (!isWaitingForAI) { processUserInput(option); } }; dom.optionButtons.appendChild(btn); });
-             } else if (step < TOTAL_STEPS && !dom.optionButtons.innerHTML.includes('失敗')) { dom.optionButtons.innerHTML = "<small><i>（請直接在上方輸入框輸入您的回答）</i></small>"; }
-             setUIEnabled(true);
-        }
-
-        function processUserInput(userMessageFromButton = null) {
-            if (isWaitingForAI) return; const messageText = userMessageFromButton || dom.userInput.value.trim();
-            if (!messageText && currentStep < exampleAnswers.length) {
-                const exampleMessage = exampleAnswers[currentStep];
-                appendMessage('user', `<i>(使用範例: ${exampleMessage})</i>`);
-                conversationHistory.push({ sender: 'user', message: exampleMessage });
-                dom.userInput.value = ''; dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none';
-                setUIEnabled(false); processBotResponse(exampleMessage); return;
-            }
-            else if (!messageText) { appendMessage('bot', '請輸入您的回答，或點選建議按鈕喔！'); dom.userInput.focus(); return; }
-            appendMessage('user', messageText);
-            conversationHistory.push({ sender: 'user', message: messageText });
-            dom.userInput.value = ''; dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none';
-            setUIEnabled(false); processBotResponse(messageText);
-        }
-
-        function processBotResponse(userReply) {
-            updateGeneratedData(currentStep, userReply); currentStep++; updateProgressIndicator();
-            if (currentStep < TOTAL_STEPS) {
-                let nextQuestion = questions[currentStep]; const goalKeyword = generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "該主題"; nextQuestion = nextQuestion.replace('{goal}', `<b>${goalKeyword}</b>`);
-                showTypingIndicator();
-                setTimeout(() => { hideTypingIndicator(); appendMessage('bot', nextQuestion); dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' }); fetchAndShowOptions(currentStep); }, 800 + Math.random() * 300);
-            } else {
-                showTypingIndicator();
-                setTimeout(() => { hideTypingIndicator(); appendMessage('bot', '太神啦！所有問題都回答完畢。我正在為您整理最終的行為指示...'); setUIEnabled(false); displayGeneratedOutput(); setUIEnabled(true); dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' }); }, 1000);
-            }
-        }
-        
-        function updateGeneratedData(step, reply) {
-             const subject = getData("教學主題", "課程");
-             switch (step) {
-                 case 0: generatedData["教學主題"] = reply; generatedData["學習單"]["名稱"] = `${reply} 學習單`; break;
-                 case 1: generatedData["教學目標"] = `學生能夠理解並掌握 ${subject} 中的「${reply}」相關知識與技能，並能初步應用。`; generatedData["學習單"]["名稱"] = `${subject} - ${reply} 學習單`; break;
-                 case 2: generatedData["行為指示"]["名稱"] = reply; break;
-                 case 3: generatedData["應用類型"] = reply; break;
-                 case 4: generatedData["行為指示"]["原始角色"] = reply; break;
-                 case 5: generatedData["行為指示"]["原始語氣"] = reply; break;
-                 case 6:
-                     const chatbotName = getData("行為指示.名稱", "Chatbot"); const exerciseTask = reply; const botRole = getData("行為指示.原始角色", "一位助手"); const botTone = getData("行為指示.原始語氣", "預設"); const appType = getData("應用類型", "互動教學");
-                     const goalKeyword = getData("教學目標", "").split('「')[1]?.split('」')[0] || "核心概念";
-                     generatedData["行為指示"]["角色與任務"] = `扮演一位 **${botRole}**，一位充滿熱情的 ${subject} 嚮導。\n主要任務是利用 **${appType}** 的方式，引導學生深入理解與練習「${goalKeyword}」，並激發他們對 ${subject} 的學習興趣與信心。`;
-                     generatedData["行為指示"]["互動邏輯"] = `
-1.  **開場與介紹**: 以 ${botTone} 的語氣打招呼，介紹自己是 ${chatbotName}，說明本次學習主題為「${goalKeyword}」。
-2.  **概念導入**: 簡潔說明「${goalKeyword}」的核心概念，可搭配 ${appType.includes("範例") || appType.includes("示範") ? "簡單範例" : "提問"} 確認學生起始理解程度。
-3.  **任務指派**: 清晰說明練習任務：「${exerciseTask}」，確保學生了解目標。
-4.  **互動與引導**: 在學生執行任務過程中，根據 ${appType} 提供協助（如：${appType.includes("步驟") ? "拆解步驟、提示下一步" : appType.includes("問答") ? "提出引導性問題" : "提供相關資訊或工具"}）。遇到困難時，給予 ${botTone.includes("耐心") || botTone.includes("鼓勵") ? "耐心引導與鼓勵" : "提示或備選方案"}。
-5.  **回饋與評估**: 針對學生的回答或任務成果，依據 Rubric 提供具體、有建設性的回饋。肯定學生的努力與進步。
-6.  **總結與延伸**: 簡要回顧學習重點，鼓勵學生思考如何將「${goalKeyword}」應用於其他情境，並預告下次學習內容或資源。`;
-                     generatedData["行為指示"]["語言風格"] = `主要以 **${botTone}** 的語氣與學生互動。\n- 在說明概念與指派任務時，力求清晰簡潔。\n- 在學生遇到困難時，展現更多的 **${botTone.includes("耐心") ? "耐心" : botTone.includes("鼓勵") ? "鼓勵" : botTone.includes("專業") ? "專業引導" : "同理心"}**。\n- 在學生展現理解或完成任務時，給予 **${botTone.includes("活潑") ? "活潑熱情" : botTone.includes("鼓勵") ? "真誠鼓勵" : "肯定性"}** 的回饋。\n- 避免使用過於複雜或抽象的術語，除非進行解釋。`;
-                     generatedData["行為指示"]["對話範例"] = `
-*   **開場**: "哈囉！我是 ${chatbotName}，你的 ${subject} 學習夥伴！準備好一起來探索有趣的「${goalKeyword}」了嗎？"
-*   **概念說明**: "那麼，「${goalKeyword}」其實就是指...（簡要解釋）。你之前有聽過或接觸過嗎？"
-*   **任務指派**: "接下來，我們來試試看這個練習：「${exerciseTask}」。目標是讓你實際應用剛剛學到的概念喔！"
-*   **引導 (學生卡關)**: "嗯，這裡好像有點卡住了？沒關係，要不要試著從...角度想想看？或者我給你一個小提示？ (${botTone} 語氣)"
-*   **回饋 (學生答對)**: "沒錯！你掌握到「${goalKeyword}」的要點了，這個部分做得很好！(${botTone} 語氣)"
-*   **回饋 (任務完成)**: "太棒了！你成功完成了「${exerciseTask}」！從你的成果來看，在...方面表現得很不錯。(${botTone} 語氣)"
-*   **總結**: "今天我們一起學習了「${goalKeyword}」，你表現得很棒！想想看，這個概念/技能未來可以用在什麼地方呢？"`;
-                     generatedData["行為指示"]["限制與邊界"] = `
-*   我的主要專長是 **${subject}** 中的「${goalKeyword}」教學，可能無法深入回答其他不相關主題的問題。
-*   我會盡力提供正確的資訊，但我的知識可能不是最即時的，若有疑問請對照課本或詢問老師。
-*   請以友善、尊重的態度與我互動，讓我們一起愉快地學習！`;
-                     generatedData["學習單"]["問題1"] = `請用你自己的話，簡要說明你所理解的「${goalKeyword}」是什麼？（至少 30 字）`;
-                     generatedData["學習單"]["問題2"] = `請描述你完成練習任務「${exerciseTask}」的主要步驟。過程中遇到了哪些困難？你是如何克服的？`;
-                     generatedData["學習單"]["問題3"] = `你認為理解「${goalKeyword}」對於學習 ${subject} 為何重要？請舉一個具體的例子說明。`;
-                     generatedData["學習單"]["反思"] = `在這次透過 ${chatbotName} 學習「${goalKeyword}」的過程中，你最大的收穫是什麼？你覺得未來可以在哪些地方應用這個概念/技能？`;
-                     generatedData["評分量表"] = generateRubricTable(goalKeyword, exerciseTask);
-                     break;
-             }
-        }
-        function generateRubricTable(goal, exercise) {
-             const displayGoal = goal || "核心概念"; const displayExercise = exercise || "練習任務";
-             return `<table class="output-table"><thead><tr><th>評分項目</th><th>優秀 (3分)</th><th>良好 (2分)</th><th>基礎 (1分)</th><th>待加強 (0分)</th></tr></thead><tbody><tr><td>「${displayGoal}」概念理解</td><td>能清晰、準確地解釋概念，並能舉例說明或連結相關知識。</td><td>能大致說明主要概念，但部分細節或連結不夠清晰/完整。</td><td>對概念有初步認識，但理解模糊或有誤，需要提示才能說明。</td><td>無法說明概念，或理解有嚴重錯誤。</td></tr><tr><td>互動參與度</td><td>積極回應 Chatbot 的提問與引導，能主動提問釐清疑問或延伸思考。</td><td>能回應大部分提問與引導，偶爾需要提示，較少主動提問。</td><td>回應被動、簡略，對引導的回應有限，不太主動參與。</td><td>幾乎不回應或答非所問。</td></tr><tr><td>練習任務「${displayExercise}」完成度</td><td>能獨立、正確且完整地完成任務，成果符合要求。</td><td>完成大部分任務，符合主要要求，但有少許錯誤或遺漏。</td><td>嘗試完成任務，但有明顯錯誤、遺漏，或僅完成部分內容。</td><td>未能完成任務，或成果嚴重偏離任務要求。</td></tr><tr><td>學習反思與應用</td><td>能具體、深入地反思學習過程與收穫，並思考未來可能的應用情境。</td><td>能簡單反思學習內容，大致了解概念的用途。</td><td>反思內容較表面或籠統，對應用的思考不清晰。</td><td>未能有效反思，或無法說明學習的意義。</td></tr></tbody></table>`;
-        }
-        function generateMarkdownOutput(goalKeyword, exerciseTask) {
-             const mdData = (path, dv = "*未提供*") => { let value = getData(path, dv); if (typeof value === 'string') { value = value.replace(/\|/g, '\\|').replace(/</g, '<').replace(/>/g, '>'); } return value; };
-             const dg = goalKeyword || "核心概念"; const de = exerciseTask || "練習任務";
-             const roleTaskMd = getData("行為指示.角色與任務").replace(/\n/g, '\n    * '); const logicMd = getData("行為指示.互動邏輯").replace(/\n/g, '\n    * '); const styleMd = getData("行為指示.語言風格").replace(/\n/g, '\n    * '); const examplesMd = getData("行為指示.對話範例").replace(/\n/g, '\n    * '); const limitsMd = getData("行為指示.限制與邊界").replace(/\n/g, '\n    * ');
-             return `# ChatBot 教學計畫: ${mdData("行為指示.名稱")}\n\n## 1. 教學主題\n${mdData("教學主題")}\n\n## 2. 教學目標\n${mdData("教學目標")}\n\n## 3. 應用類型\n${mdData("應用類型")}\n\n## 4. Chatbot 行為指示\n\n*   **名稱:** ${mdData("行為指示.名稱")}\n*   **語言:** ${mdData("行為指示.語言設定", "繁體中文")}\n*   **角色與任務:**\n    * ${roleTaskMd}\n*   **互動邏輯:**\n    * ${logicMd}\n*   **語言風格:**\n    * ${styleMd}\n*   **對話範例:**\n    * ${examplesMd}\n*   **限制與邊界:**\n    * ${limitsMd}\n\n## 5. 學習單 (${mdData("學習單.名稱", '未命名')})\n\n*   **問題1:** ${getData("學習單.問題1")}\n*   **問題2:** ${getData("學習單.問題2")}\n*   **問題3:** ${getData("學習單.問題3")}\n*   **反思:** ${getData("學習單.反思")}\n\n## 6. Rubric 評分量表\n\n| 評分項目                         | 優秀 (3分)                               | 良好 (2分)                             | 基礎 (1分)                               | 待加強 (0分)                       |\n| :------------------------------- | :--------------------------------------- | :------------------------------------- | :--------------------------------------- | :------------------------------- |\n| **「${dg}」概念理解**         | 能清晰、準確地解釋概念，並能舉例說明或連結相關知識。 | 能大致說明主要概念，但部分細節或連結不夠清晰/完整。 | 對概念有初步認識，但理解模糊或有誤，需要提示才能說明。 | 無法說明概念，或理解有嚴重錯誤。     |\n| **互動參與度**                   | 積極回應 Chatbot 的提問與引導，能主動提問釐清疑問或延伸思考。 | 能回應大部分提問與引導，偶爾需要提示，較少主動提問。   | 回應被動、簡略，對引導的回應有限，不太主動參與。     | 幾乎不回應或答非所問。             |\n| **練習任務「${de}」完成度** | 能獨立、正確且完整地完成任務，成果符合要求。       | 完成大部分任務，符合主要要求，但有少許錯誤或遺漏。   | 嘗試完成任務，但有明顯錯誤、遺漏，或僅完成部分內容。   | 未能完成任務，或成果嚴重偏離任務要求。 |\n| **學習反思與應用**               | 能具體、深入地反思學習過程與收穫，並思考未來可能的應用情境。 | 能簡單反思學習內容，大致了解概念的用途。           | 反思內容較表面或籠統，對應用的思考不清晰。           | 未能有效反思，或無法說明學習的意義。 |\n\n`;
-        }
-        function generateWordContent(chatbotName, goalKeyword, exerciseTask) {
-            const wordData = (path, dv = "<em>未提供</em>") => { const v = getData(path, dv); return typeof v === 'string' ? v.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/\n/g, '<br />') : v; };
-            const rubricTableHtml = generatedData["評分量表"] || "<p><em>評分量表生成失敗。</em></p>";
-            return `<!DOCTYPE html><html lang="zh-TW"><head><meta charset='UTF-8'><title>ChatBot 教學計畫: ${chatbotName || '未命名'}</title><style>body{font-family:'Arial','Noto Sans TC',sans-serif;line-height:1.6;margin:30px;color:#333;}h1,h2,h3{color:#005A9C;margin:0 0 15px 0;}h1{text-align:center;margin-bottom:25px;font-size:1.5em;}h2{border-bottom:1px solid #00A9E0;padding-bottom:6px;margin-top:30px;font-size:1.3em;}h3{color:#00A9E0;margin-top:20px;font-size:1.1em;}ul{list-style:none;padding-left:0;}li{margin-bottom:10px;padding-left:1.5em;position:relative;}li::before{content:"•";color:#00A9E0;position:absolute;left:0;top:1px;font-weight:bold;}strong{font-weight:bold;color:#005A9C;}table{border-collapse:collapse;width:100%;margin-top:15px;border:1px solid #B0C4DE;font-size:0.9em;}th,td{border:1px solid #B0C4DE;padding:8px 10px;text-align:left;vertical-align:top;}th{background-color:#D6EAF8;font-weight:bold;text-align:center;}em{font-style:italic;color:#555;} p {margin: 0 0 10px 0;} li > strong {display: inline-block; margin-bottom: 3px;}</style></head><body><h1>ChatBot 教學計畫: ${wordData("行為指示.名稱", '未命名')}</h1><h2>1. 教學主題</h2><p>${wordData("教學主題")}</p><h2>2. 教學目標</h2><p>${wordData("教學目標")}</p><h2>3. 應用類型</h2><p>${wordData("應用類型")}</p><h2>4. Chatbot 行為指示</h2><ul><li><strong>名稱：</strong> ${wordData("行為指示.名稱")}</li><li><strong>語言：</strong> ${wordData("行為指示.語言設定", "繁體中文")}</li><li><strong>角色與任務：</strong><br />${wordData("行為指示.角色與任務")}</li><li><strong>互動邏輯：</strong><br />${wordData("行為指示.互動邏輯")}</li><li><strong>語言風格：</strong><br />${wordData("行為指示.語言風格")}</li><li><strong>對話範例：</strong><br />${wordData("行為指示.對話範例")}</li><li><strong>限制與邊界：</strong><br />${wordData("行為指示.限制與邊界")}</li></ul><h2>5. 學習單 (${wordData("學習單.名稱", '未命名')})</h2><ul><li><strong>問題1：</strong> ${wordData("學習單.問題1")}</li><li><strong>問題2：</strong> ${wordData("學習單.問題2")}</li><li><strong>問題3：</strong> ${wordData("學習單.問題3")}</li><li><strong>反思：</strong> ${wordData("學習單.反思")}</li></ul><h2>6. Rubric 評分量表</h2>${rubricTableHtml}</body></html>`;
-        }
-        function displayGeneratedOutput() {
-            dom.outputSection.style.display = 'block'; const goalKeyword = generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "核心概念"; const exerciseTask = generatedData["學習單"]["問題2"]?.split('「')[1]?.split('」')[0] || "練習任務"; dom.outputContent.innerHTML = '';
-            const sections = [
-                 { id: 'output-theme', title: '1. 教學主題', icon: 'fas fa-book-open', content: `<p><span>${getData("教學主題")}</span></p>` },
-                 { id: 'output-goal', title: '2. 教學目標', icon: 'fas fa-bullseye', content: `<p><span>${getData("教學目標")}</span></p>` },
-                 { id: 'output-type', title: '3. 應用類型', icon: 'fas fa-cogs', content: `<p><span>${getData("應用類型")}</span></p>` },
-                 { id: 'output-instructions', title: '4. Chatbot 行為指示', icon: 'fas fa-robot', content: `<ul><li><i class="fas fa-signature"></i><strong>名稱：</strong><span>${getData("行為指示.名稱")}</span></li><li><i class="fas fa-language"></i><strong>語言：</strong><span>${getData("行為指示.語言設定", "繁體中文")}</span></li><li><i class="fas fa-user-tie"></i><strong>角色與任務：</strong><span>${getData("行為指示.角色與任務")}</span></li><li><i class="fas fa-sitemap"></i><strong>互動邏輯：</strong><span>${getData("行為指示.互動邏輯")}</span></li><li><i class="fas fa-comments"></i><strong>語言風格：</strong><span>${getData("行為指示.語言風格")}</span></li><li><i class="fas fa-comment-dots"></i><strong>對話範例：</strong><span>${getData("行為指示.對話範例")}</span></li><li><i class="fas fa-ban"></i><strong>限制與邊界：</strong><span>${getData("行為指示.限制與邊界")}</span></li></ul>` },
-                 { id: 'output-worksheet', title: `5. 學習單 (${getData("學習單.名稱", '未命名')})`, icon: 'fas fa-file-alt', content: `<ul class="structured-list"><li><strong>問題1：</strong><span>${getData("學習單.問題1")}</span></li><li><strong>問題2：</strong><span>${getData("學習單.問題2")}</span></li><li><strong>問題3：</strong><span>${getData("學習單.問題3")}</span></li><li><strong>反思：</strong><span>${getData("學習單.反思")}</span></li></ul>` },
-                 { id: 'output-rubric', title: '6. Rubric 評分量表', icon: 'fas fa-clipboard-check', content: generatedData["評分量表"] || `<p><em>評分量表生成失敗。</em></p>` }
-            ];
-            sections.forEach(sec => { const div = document.createElement('div'); div.className = 'output-content-section'; div.id = sec.id; div.innerHTML = `<h3><i class="${sec.icon}"></i> ${sec.title}</h3>${sec.content}`; dom.outputContent.appendChild(div); });
-            const markdownOutput = generateMarkdownOutput(goalKeyword, exerciseTask); const wordFileContent = generateWordContent(getData("行為指示.名稱", '未命名'), goalKeyword, exerciseTask); const wordFileName = `教學ChatBot行為指示-${getData("行為指示.名稱", "未命名")}.doc`;
-            dom.copyButton.onclick = async () => {
-                 try { await navigator.clipboard.writeText(markdownOutput); dom.copyStatus.textContent = '已複製！'; dom.copyStatus.style.color = 'var(--success-color)'; setTimeout(() => { dom.copyStatus.textContent = ''; }, 2000); } catch (err) { console.error('無法複製文字: ', err); dom.copyStatus.textContent = '複製失敗'; dom.copyStatus.style.color = 'var(--error-color)'; }
-            };
-            dom.downloadButton.onclick = () => {
-                 try { const blob = new Blob(['\ufeff', wordFileContent], { type: 'application/msword;charset=utf-8' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = wordFileName; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href); } catch (error) { console.error("下載失敗:", error); alert("無法產生下載文件。"); }
-            };
-            setTimeout(() => { dom.outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
-         }
-
-        function resetConversation() {
-            console.log("Resetting conversation...");
-            conversationHistory = [];
-            currentStep = 0;
-            generatedData = { "教學主題": "", "教學目標": "", "應用類型": "", "行為指示": { "名稱": "", "語言設定": "繁體中文", "原始角色": "", "原始語氣": "", "角色與任務": "", "互動邏輯": "", "語言風格": "", "對話範例": "", "限制與邊界": "" }, "學習單": { "名稱": "", "問題1": "", "問題2": "", "問題3": "", "反思": "" }, "評分量表": "" };
-            
-            dom.chatLog.innerHTML = '';
-            const typingElem = document.createElement('div');
-            typingElem.className = 'message bot-message';
-            typingElem.id = 'typing-indicator';
-            typingElem.style.display = 'none';
-            typingElem.innerHTML = `<div class="bot-avatar"><div class="face"><div class="eye eye-left"><div class="pupil"></div></div><div class="eye eye-right"><div class="pupil"></div></div><div class="mouth"></div></div></div><div class="bubble bot-bubble"><div class="typing-indicator-container"><span></span><span></span><span></span></div></div>`;
-            dom.chatLog.appendChild(typingElem);
-            
-            hideTypingIndicator();
-            dom.outputSection.style.display = 'none';
-            dom.outputContent.innerHTML = "";
-            dom.copyStatus.textContent = '';
-            dom.optionButtons.innerHTML = '';
-            dom.optionButtons.style.borderTop = 'none';
-            setUIEnabled(false);
-            
-            dom.apiKeyInput.value = '';
-            dom.apiKeyInput.disabled = false;
-            dom.apiKeyInput.placeholder = '請貼上您從 Google AI Studio 取得的 API 金鑰';
-            dom.apiInfoBox.classList.remove('warning');
-            dom.apiInfoText.textContent = '請提供您的 Google Gemini API 金鑰，以啟用 AI 生成建議功能。';
-
-            appendMessage('bot', '您好！我是教學ChatBot行為指示生成神助手，正在準備中...');
-            updateProgressIndicator();
-            
-            setTimeout(() => {
-                appendMessage('bot', questions[0]);
-                fetchAndShowOptions(0);
-                dom.userInput.value = '';
-                dom.userInput.focus();
-                dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' });
-            }, 800);
-        }
-
+        function appendMessage(sender, message) { const messageDiv = document.createElement('div'); messageDiv.classList.add('message', `${sender}-message`); if (sender === 'bot') { const avatar = document.createElement('div'); avatar.classList.add('bot-avatar'); const face = document.createElement('div'); face.classList.add('face'); const eyeLeft = document.createElement('div'); eyeLeft.classList.add('eye', 'eye-left'); const pupilLeft = document.createElement('div'); pupilLeft.classList.add('pupil'); eyeLeft.appendChild(pupilLeft); const eyeRight = document.createElement('div'); eyeRight.classList.add('eye', 'eye-right'); const pupilRight = document.createElement('div'); pupilRight.classList.add('pupil'); eyeRight.appendChild(pupilRight); const mouth = document.createElement('div'); mouth.classList.add('mouth'); face.appendChild(eyeLeft); face.appendChild(eyeRight); face.appendChild(mouth); avatar.appendChild(face); messageDiv.appendChild(avatar); } const bubble = document.createElement('div'); bubble.classList.add('bubble', `${sender}-bubble`); bubble.innerHTML = message; messageDiv.appendChild(bubble); const typingElem = dom.typingIndicator; if (typingElem && dom.chatLog.contains(typingElem)) { dom.chatLog.insertBefore(messageDiv, typingElem); } else { dom.chatLog.appendChild(messageDiv); } }
+        async function getDynamicSuggestions(step, context) { if (!initializeAI()) { appendMessage('bot', `<b style='color: var(--error-color);'>無法生成AI建議：</b> 請先提供有效的 API 金鑰。`); return []; } const { subject = "一般主題", goalKeyword = "核心概念" } = context; let prompt = ""; const outputFormatInstruction = "請提供最多4個相關的、簡短的建議。請用繁體中文回答。將建議嚴格格式化為一個 JavaScript 陣列字串，例如：`['建議一', '建議二', '建議三', '建議四']`。不要包含任何其他說明文字、註解或 Markdown 標記。"; switch (step) { case 1: prompt = `針對教學科目「${subject}」，請建議一些學生可以學習的具體概念或技能（約5-10字）。${outputFormatInstruction}`; break; case 2: prompt = `為一個教學聊天機器人取名，它專門教授「${subject}」的「${goalKeyword}」。請提供約4個創意且相關的名稱。${outputFormatInstruction}`; break; case 3: prompt = `一個聊天機器人要教授「${subject}」的「${goalKeyword}」，它可以主要使用哪些互動方式或教學方法？請提供約4個簡短描述。${outputFormatInstruction}`; break; case 4: prompt = `為一個教授「${subject}」科目中「${goalKeyword}」的聊天機器人，建議約4個有趣的角色身份。${outputFormatInstruction}`; break; case 6: prompt = `針對「${subject}」科目中的「${goalKeyword}」，請設計約4個相關的具體練習任務或活動（簡短描述即可）。${outputFormatInstruction}`; break; default: return []; } console.log("Sending prompt to Gemini:", prompt); setUIEnabled(false); dom.optionButtons.innerHTML = ''; dom.optionButtons.classList.add('loading'); try { const result = await model.generateContent({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig, safetySettings, }); const response = result.response; if (!response || !response.candidates || response.candidates.length === 0 || response.candidates[0].finishReason !== 'STOP') { const reason = response?.candidates?.[0]?.finishReason || "未知"; dom.optionButtons.innerHTML = `<small style='color: var(--error-color);'><i>AI 建議生成失敗 (${reason})，請嘗試不同描述或手動輸入。</i></small>`; return []; } const responseText = response.text().trim(); const match = responseText.match(/\[\s*(['"].*?['"]\s*,\s*)*(['"].*?['"])\s*\]/); let suggestions = []; if (match && match[0]) { try { suggestions = JSON.parse(match[0].replace(/'/g, '"')); } catch (e) { /* ignore */ } } if (!Array.isArray(suggestions) || suggestions.length === 0) { suggestions = responseText.split('\n').map(s => s.replace(/^-?\s*['"`]?/, '').replace(/['"`]?\s*,?$/, '').trim()).filter(s => s && !s.startsWith('[') && !s.endsWith(']')); } return suggestions.slice(0, 4); } catch (error) { console.error("Error calling Gemini API:", error); dom.optionButtons.innerHTML = "<small style='color: var(--error-color);'><i>AI 建議生成失敗，請檢查網路或 API 金鑰。</i></small>"; return []; } finally { dom.optionButtons.classList.remove('loading'); setUIEnabled(true); } }
+        async function fetchAndShowOptions(step) { dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none'; const context = { subject: getData("教學主題", ""), goalKeyword: generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "" }; let opts = []; if (step === 0) { opts = suggestionMap.subjects; } else if (step === 5) { opts = suggestionMap.tones; } else if (STEPS_REQUIRING_AI.includes(step)) { opts = await getDynamicSuggestions(step, context); } if (opts.length > 0) { dom.optionButtons.style.borderTop = '1px dashed var(--border-color)'; opts.forEach(option => { const btn = document.createElement('button'); btn.classList.add('option-btn'); btn.textContent = option; btn.onclick = () => { if (!isWaitingForAI) { processUserInput(option); } }; dom.optionButtons.appendChild(btn); }); } else if (step < TOTAL_STEPS && !dom.optionButtons.innerHTML.includes('失敗')) { dom.optionButtons.innerHTML = "<small><i>（請直接在上方輸入框輸入您的回答）</i></small>"; } setUIEnabled(true); }
+        function processUserInput(userMessageFromButton = null) { if (isWaitingForAI) return; const messageText = userMessageFromButton || dom.userInput.value.trim(); if (!messageText && currentStep < exampleAnswers.length) { const exampleMessage = exampleAnswers[currentStep]; appendMessage('user', `<i>(使用範例: ${exampleMessage})</i>`); conversationHistory.push({ sender: 'user', message: exampleMessage }); dom.userInput.value = ''; dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none'; setUIEnabled(false); processBotResponse(exampleMessage); return; } else if (!messageText) { appendMessage('bot', '請輸入您的回答，或點選建議按鈕喔！'); dom.userInput.focus(); return; } appendMessage('user', messageText); conversationHistory.push({ sender: 'user', message: messageText }); dom.userInput.value = ''; dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none'; setUIEnabled(false); processBotResponse(messageText); }
+        function processBotResponse(userReply) { updateGeneratedData(currentStep, userReply); currentStep++; updateProgressIndicator(); if (currentStep < TOTAL_STEPS) { let nextQuestion = questions[currentStep]; const goalKeyword = generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "該主題"; nextQuestion = nextQuestion.replace('{goal}', `<b>${goalKeyword}</b>`); showTypingIndicator(); setTimeout(() => { hideTypingIndicator(); appendMessage('bot', nextQuestion); dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' }); fetchAndShowOptions(currentStep); }, 800 + Math.random() * 300); } else { showTypingIndicator(); setTimeout(() => { hideTypingIndicator(); appendMessage('bot', '太神啦！所有問題都回答完畢。我正在為您整理最終的行為指示...'); setUIEnabled(false); displayGeneratedOutput(); setUIEnabled(true); dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' }); }, 1000); } }
+        function updateGeneratedData(step, reply) { const subject = getData("教學主題", "課程"); switch (step) { case 0: generatedData["教學主題"] = reply; generatedData["學習單"]["名稱"] = `${reply} 學習單`; break; case 1: generatedData["教學目標"] = `學生能夠理解並掌握 ${subject} 中的「${reply}」相關知識與技能，並能初步應用。`; generatedData["學習單"]["名稱"] = `${subject} - ${reply} 學習單`; break; case 2: generatedData["行為指示"]["名稱"] = reply; break; case 3: generatedData["應用類型"] = reply; break; case 4: generatedData["行為指示"]["原始角色"] = reply; break; case 5: generatedData["行為指示"]["原始語氣"] = reply; break; case 6: const chatbotName = getData("行為指示.名稱", "Chatbot"); const exerciseTask = reply; const botRole = getData("行為指示.原始角色", "一位助手"); const botTone = getData("行為指示.原始語氣", "預設"); const appType = getData("應用類型", "互動教學"); const goalKeyword = getData("教學目標", "").split('「')[1]?.split('」')[0] || "核心概念"; generatedData["行為指示"]["角色與任務"] = `扮演一位 **${botRole}**，一位充滿熱情的 ${subject} 嚮導。\n主要任務是利用 **${appType}** 的方式，引導學生深入理解與練習「${goalKeyword}」，並激發他們對 ${subject} 的學習興趣與信心。`; generatedData["行為指示"]["互動邏輯"] = `\n1.  **開場與介紹**: 以 ${botTone} 的語氣打招呼，介紹自己是 ${chatbotName}，說明本次學習主題為「${goalKeyword}」。\n2.  **概念導入**: 簡潔說明「${goalKeyword}」的核心概念，可搭配 ${appType.includes("範例") || appType.includes("示範") ? "簡單範例" : "提問"} 確認學生起始理解程度。\n3.  **任務指派**: 清晰說明練習任務：「${exerciseTask}」，確保學生了解目標。\n4.  **互動與引導**: 在學生執行任務過程中，根據 ${appType} 提供協助（如：${appType.includes("步驟") ? "拆解步驟、提示下一步" : appType.includes("問答") ? "提出引導性問題" : "提供相關資訊或工具"}）。遇到困難時，給予 ${botTone.includes("耐心") || botTone.includes("鼓勵") ? "耐心引導與鼓勵" : "提示或備選方案"}。\n5.  **回饋與評估**: 針對學生的回答或任務成果，依據 Rubric 提供具體、有建設性的回饋。肯定學生的努力與進步。\n6.  **總結與延伸**: 簡要回顧學習重點，鼓勵學生思考如何將「${goalKeyword}」應用於其他情境，並預告下次學習內容或資源。`; generatedData["行為指示"]["語言風格"] = `主要以 **${botTone}** 的語氣與學生互動。\n- 在說明概念與指派任務時，力求清晰簡潔。\n- 在學生遇到困難時，展現更多的 **${botTone.includes("耐心") ? "耐心" : botTone.includes("鼓勵") ? "鼓勵" : botTone.includes("專業") ? "專業引導" : "同理心"}**。\n- 在學生展現理解或完成任務時，給予 **${botTone.includes("活潑") ? "活潑熱情" : botTone.includes("鼓勵") ? "真誠鼓勵" : "肯定性"}** 的回饋。\n- 避免使用過於複雜或抽象的術語，除非進行解釋。`; generatedData["行為指示"]["對話範例"] = `\n*   **開場**: "哈囉！我是 ${chatbotName}，你的 ${subject} 學習夥伴！準備好一起來探索有趣的「${goalKeyword}」了嗎？"\n*   **概念說明**: "那麼，「${goalKeyword}」其實就是指...（簡要解釋）。你之前有聽過或接觸過嗎？"\n*   **任務指派**: "接下來，我們來試試看這個練習：「${exerciseTask}」。目標是讓你實際應用剛剛學到的概念喔！"\n*   **引導 (學生卡關)**: "嗯，這裡好像有點卡住了？沒關係，要不要試著從...角度想想看？或者我給你一個小提示？ (${botTone} 語氣)"\n*   **回饋 (學生答對)**: "沒錯！你掌握到「${goalKeyword}」的要點了，這個部分做得很好！(${botTone} 語氣)"\n*   **回饋 (任務完成)**: "太棒了！你成功完成了「${exerciseTask}」！從你的成果來看，在...方面表現得很不錯。(${botTone} 語氣)"\n*   **總結**: "今天我們一起學習了「${goalKeyword}」，你表現得很棒！想想看，這個概念/技能未來可以用在什麼地方呢？"`; generatedData["行為指示"]["限制與邊界"] = `\n*   我的主要專長是 **${subject}** 中的「${goalKeyword}」教學，可能無法深入回答其他不相關主題的問題。\n*   我會盡力提供正確的資訊，但我的知識可能不是最即時的，若有疑問請對照課本或詢問老師。\n*   請以友善、尊重的態度與我互動，讓我們一起愉快地學習！`; generatedData["學習單"]["問題1"] = `請用你自己的話，簡要說明你所理解的「${goalKeyword}」是什麼？（至少 30 字）`; generatedData["學習單"]["問題2"] = `請描述你完成練習任務「${exerciseTask}」的主要步驟。過程中遇到了哪些困難？你是如何克服的？`; generatedData["學習單"]["問題3"] = `你認為理解「${goalKeyword}」對於學習 ${subject} 為何重要？請舉一個具體的例子說明。`; generatedData["學習單"]["反思"] = `在這次透過 ${chatbotName} 學習「${goalKeyword}」的過程中，你最大的收穫是什麼？你覺得未來可以在哪些地方應用這個概念/技能？`; generatedData["評分量表"] = generateRubricTable(goalKeyword, exerciseTask); break; } }
+        function generateRubricTable(goal, exercise) { const displayGoal = goal || "核心概念"; const displayExercise = exercise || "練習任務"; return `<table class="output-table"><thead><tr><th>評分項目</th><th>優秀 (3分)</th><th>良好 (2分)</th><th>基礎 (1分)</th><th>待加強 (0分)</th></tr></thead><tbody><tr><td>「${displayGoal}」概念理解</td><td>能清晰、準確地解釋概念，並能舉例說明或連結相關知識。</td><td>能大致說明主要概念，但部分細節或連結不夠清晰/完整。</td><td>對概念有初步認識，但理解模糊或有誤，需要提示才能說明。</td><td>無法說明概念，或理解有嚴重錯誤。</td></tr><tr><td>互動參與度</td><td>積極回應 Chatbot 的提問與引導，能主動提問釐清疑問或延伸思考。</td><td>能回應大部分提問與引導，偶爾需要提示，較少主動提問。</td><td>回應被動、簡略，對引導的回應有限，不太主動參與。</td><td>幾乎不回應或答非所問。</td></tr><tr><td>練習任務「${displayExercise}」完成度</td><td>能獨立、正確且完整地完成任務，成果符合要求。</td><td>完成大部分任務，符合主要要求，但有少許錯誤或遺漏。</td><td>嘗試完成任務，但有明顯錯誤、遺漏，或僅完成部分內容。</td><td>未能完成任務，或成果嚴重偏離任務要求。</td></tr><tr><td>學習反思與應用</td><td>能具體、深入地反思學習過程與收穫，並思考未來可能的應用情境。</td><td>能簡單反思學習內容，大致了解概念的用途。</td><td>反思內容較表面或籠統，對應用的思考不清晰。</td><td>未能有效反思，或無法說明學習的意義。</td></tr></tbody></table>`; }
+        function generateMarkdownOutput(goalKeyword, exerciseTask) { const mdData = (path, dv = "*未提供*") => { let value = getData(path, dv); if (typeof value === 'string') { value = value.replace(/\|/g, '\\|').replace(/</g, '<').replace(/>/g, '>'); } return value; }; const dg = goalKeyword || "核心概念"; const de = exerciseTask || "練習任務"; const roleTaskMd = getData("行為指示.角色與任務").replace(/\n/g, '\n    * '); const logicMd = getData("行為指示.互動邏輯").replace(/\n/g, '\n    * '); const styleMd = getData("行為指示.語言風格").replace(/\n/g, '\n    * '); const examplesMd = getData("行為指示.對話範例").replace(/\n/g, '\n    * '); const limitsMd = getData("行為指示.限制與邊界").replace(/\n/g, '\n    * '); return `# ChatBot 教學計畫: ${mdData("行為指示.名稱")}\n\n## 1. 教學主題\n${mdData("教學主題")}\n\n## 2. 教學目標\n${mdData("教學目標")}\n\n## 3. 應用類型\n${mdData("應用類型")}\n\n## 4. Chatbot 行為指示\n\n*   **名稱:** ${mdData("行為指示.名稱")}\n*   **語言:** ${mdData("行為指示.語言設定", "繁體中文")}\n*   **角色與任務:**\n    * ${roleTaskMd}\n*   **互動邏輯:**\n    * ${logicMd}\n*   **語言風格:**\n    * ${styleMd}\n*   **對話範例:**\n    * ${examplesMd}\n*   **限制與邊界:**\n    * ${limitsMd}\n\n## 5. 學習單 (${mdData("學習單.名稱", '未命名')})\n\n*   **問題1:** ${getData("學習單.問題1")}\n*   **問題2:** ${getData("學習單.問題2")}\n*   **問題3:** ${getData("學習單.問題3")}\n*   **反思:** ${getData("學習單.反思")}\n\n## 6. Rubric 評分量表\n\n| 評分項目 | 優秀 (3分) | 良好 (2分) | 基礎 (1分) | 待加強 (0分) |\n| :--- | :--- | :--- | :--- | :--- |\n| **「${dg}」概念理解** | 能清晰、準確地解釋概念，並能舉例說明或連結相關知識。 | 能大致說明主要概念，但部分細節或連結不夠清晰/完整。 | 對概念有初步認識，但理解模糊或有誤，需要提示才能說明。 | 無法說明概念，或理解有嚴重錯誤。 |\n| **互動參與度** | 積極回應 Chatbot 的提問與引導，能主動提問釐清疑問或延伸思考。 | 能回應大部分提問與引導，偶爾需要提示，較少主動提問。 | 回應被動、簡略，對引導的回應有限，不太主動參與。 | 幾乎不回應或答非所問。 |\n| **練習任務「${de}」完成度** | 能獨立、正確且完整地完成任務，成果符合要求。 | 完成大部分任務，符合主要要求，但有少許錯誤或遺漏。 | 嘗試完成任務，但有明顯錯誤、遺漏，或僅完成部分內容。 | 未能完成任務，或成果嚴重偏離任務要求。 |\n| **學習反思與應用** | 能具體、深入地反思學習過程與收穫，並思考未來可能的應用情境。 | 能簡單反思學習內容，大致了解概念的用途。 | 反思內容較表面或籠統，對應用的思考不清晰。 | 未能有效反思，或無法說明學習的意義。 |\n\n`; }
+        function generateWordContent(chatbotName, goalKeyword, exerciseTask) { const wordData = (path, dv = "<em>未提供</em>") => { const v = getData(path, dv); return typeof v === 'string' ? v.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/\n/g, '<br />') : v; }; const rubricTableHtml = generatedData["評分量表"] || "<p><em>評分量表生成失敗。</em></p>"; return `<!DOCTYPE html><html lang="zh-TW"><head><meta charset='UTF-8'><title>ChatBot 教學計畫: ${chatbotName || '未命名'}</title><style>body{font-family:'Arial','Noto Sans TC',sans-serif;line-height:1.6;margin:30px;color:#333;}h1,h2,h3{color:#005A9C;margin:0 0 15px 0;}h1{text-align:center;margin-bottom:25px;font-size:1.5em;}h2{border-bottom:1px solid #00A9E0;padding-bottom:6px;margin-top:30px;font-size:1.3em;}h3{color:#00A9E0;margin-top:20px;font-size:1.1em;}ul{list-style:none;padding-left:0;}li{margin-bottom:10px;padding-left:1.5em;position:relative;}li::before{content:"•";color:#00A9E0;position:absolute;left:0;top:1px;font-weight:bold;}strong{font-weight:bold;color:#005A9C;}table{border-collapse:collapse;width:100%;margin-top:15px;border:1px solid #B0C4DE;font-size:0.9em;}th,td{border:1px solid #B0C4DE;padding:8px 10px;text-align:left;vertical-align:top;}th{background-color:#D6EAF8;font-weight:bold;text-align:center;}em{font-style:italic;color:#555;} p {margin: 0 0 10px 0;} li > strong {display: inline-block; margin-bottom: 3px;}</style></head><body><h1>ChatBot 教學計畫: ${wordData("行為指示.名稱", '未命名')}</h1><h2>1. 教學主題</h2><p>${wordData("教學主題")}</p><h2>2. 教學目標</h2><p>${wordData("教學目標")}</p><h2>3. 應用類型</h2><p>${wordData("應用類型")}</p><h2>4. Chatbot 行為指示</h2><ul><li><strong>名稱：</strong> ${wordData("行為指示.名稱")}</li><li><strong>語言：</strong> ${wordData("行為指示.語言設定", "繁體中文")}</li><li><strong>角色與任務：</strong><br />${wordData("行為指示.角色與任務")}</li><li><strong>互動邏輯：</strong><br />${wordData("行為指示.互動邏輯")}</li><li><strong>語言風格：</strong><br />${wordData("行為指示.語言風格")}</li><li><strong>對話範例：</strong><br />${wordData("行為指示.對話範例")}</li><li><strong>限制與邊界：</strong><br />${wordData("行為指示.限制與邊界")}</li></ul><h2>5. 學習單 (${wordData("學習單.名稱", '未命名')})</h2><ul><li><strong>問題1：</strong> ${wordData("學習單.問題1")}</li><li><strong>問題2：</strong> ${wordData("學習單.問題2")}</li><li><strong>問題3：</strong> ${wordData("學習單.問題3")}</li><li><strong>反思：</strong> ${wordData("學習單.反思")}</li></ul><h2>6. Rubric 評分量表</h2>${rubricTableHtml}</body></html>`; }
+        function displayGeneratedOutput() { dom.outputSection.style.display = 'block'; const goalKeyword = generatedData["教學目標"]?.split('「')[1]?.split('」')[0] || "核心概念"; const exerciseTask = generatedData["學習單"]["問題2"]?.split('「')[1]?.split('」')[0] || "練習任務"; dom.outputContent.innerHTML = ''; const sections = [ { id: 'output-theme', title: '1. 教學主題', icon: 'fas fa-book-open', content: `<p><span>${getData("教學主題")}</span></p>` }, { id: 'output-goal', title: '2. 教學目標', icon: 'fas fa-bullseye', content: `<p><span>${getData("教學目標")}</span></p>` }, { id: 'output-type', title: '3. 應用類型', icon: 'fas fa-cogs', content: `<p><span>${getData("應用類型")}</span></p>` }, { id: 'output-instructions', title: '4. Chatbot 行為指示', icon: 'fas fa-robot', content: `<ul><li><i class="fas fa-signature"></i><strong>名稱：</strong><span>${getData("行為指示.名稱")}</span></li><li><i class="fas fa-language"></i><strong>語言：</strong><span>${getData("行為指示.語言設定", "繁體中文")}</span></li><li><i class="fas fa-user-tie"></i><strong>角色與任務：</strong><span>${getData("行為指示.角色與任務")}</span></li><li><i class="fas fa-sitemap"></i><strong>互動邏輯：</strong><span>${getData("行為指示.互動邏輯")}</span></li><li><i class="fas fa-comments"></i><strong>語言風格：</strong><span>${getData("行為指示.語言風格")}</span></li><li><i class="fas fa-comment-dots"></i><strong>對話範例：</strong><span>${getData("行為指示.對話範例")}</span></li><li><i class="fas fa-ban"></i><strong>限制與邊界：</strong><span>${getData("行為指示.限制與邊界")}</span></li></ul>` }, { id: 'output-worksheet', title: `5. 學習單 (${getData("學習單.名稱", '未命名')})`, icon: 'fas fa-file-alt', content: `<ul class="structured-list"><li><strong>問題1：</strong><span>${getData("學習單.問題1")}</span></li><li><strong>問題2：</strong><span>${getData("學習單.問題2")}</span></li><li><strong>問題3：</strong><span>${getData("學習單.問題3")}</span></li><li><strong>反思：</strong><span>${getData("學習單.反思")}</span></li></ul>` }, { id: 'output-rubric', title: '6. Rubric 評分量表', icon: 'fas fa-clipboard-check', content: generatedData["評分量表"] || `<p><em>評分量表生成失敗。</em></p>` } ]; sections.forEach(sec => { const div = document.createElement('div'); div.className = 'output-content-section'; div.id = sec.id; div.innerHTML = `<h3><i class="${sec.icon}"></i> ${sec.title}</h3>${sec.content}`; dom.outputContent.appendChild(div); }); const markdownOutput = generateMarkdownOutput(goalKeyword, exerciseTask); const wordFileContent = generateWordContent(getData("行為指示.名稱", '未命名'), goalKeyword, exerciseTask); const wordFileName = `教學ChatBot行為指示-${getData("行為指示.名稱", "未命名")}.doc`; dom.copyButton.onclick = async () => { try { await navigator.clipboard.writeText(markdownOutput); dom.copyStatus.textContent = '已複製！'; dom.copyStatus.style.color = 'var(--success-color)'; setTimeout(() => { dom.copyStatus.textContent = ''; }, 2000); } catch (err) { console.error('無法複製文字: ', err); dom.copyStatus.textContent = '複製失敗'; dom.copyStatus.style.color = 'var(--error-color)'; } }; dom.downloadButton.onclick = () => { try { const blob = new Blob(['\ufeff', wordFileContent], { type: 'application/msword;charset=utf-8' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = wordFileName; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href); } catch (error) { console.error("下載失敗:", error); alert("無法產生下載文件。"); } }; setTimeout(() => { dom.outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); }
+        function resetConversation() { console.log("Resetting conversation..."); conversationHistory = []; currentStep = 0; generatedData = { "教學主題": "", "教學目標": "", "應用類型": "", "行為指示": { "名稱": "", "語言設定": "繁體中文", "原始角色": "", "原始語氣": "", "角色與任務": "", "互動邏輯": "", "語言風格": "", "對話範例": "", "限制與邊界": "" }, "學習單": { "名稱": "", "問題1": "", "問題2": "", "問題3": "", "反思": "" }, "評分量表": "" }; dom.chatLog.innerHTML = ''; const typingElem = document.createElement('div'); typingElem.className = 'message bot-message'; typingElem.id = 'typing-indicator'; typingElem.style.display = 'none'; typingElem.innerHTML = `<div class="bot-avatar"><div class="face"><div class="eye eye-left"><div class="pupil"></div></div><div class="eye eye-right"><div class="pupil"></div></div><div class="mouth"></div></div></div><div class="bubble bot-bubble"><div class="typing-indicator-container"><span></span><span></span><span></span></div></div>`; dom.chatLog.appendChild(typingElem); hideTypingIndicator(); dom.outputSection.style.display = 'none'; dom.outputContent.innerHTML = ""; dom.copyStatus.textContent = ''; dom.optionButtons.innerHTML = ''; dom.optionButtons.style.borderTop = 'none'; setUIEnabled(false); dom.apiKeyInput.value = ''; dom.apiKeyInput.disabled = false; dom.apiKeyInput.placeholder = '請貼上您從 Google AI Studio 取得的 API 金鑰'; dom.apiInfoBox.classList.remove('warning'); dom.apiInfoText.textContent = '請提供您的 Google Gemini API 金鑰，以啟用 AI 生成建議功能。'; appendMessage('bot', '您好！我是教學ChatBot行為指示生成神助手，正在準備中...'); updateProgressIndicator(); setTimeout(() => { appendMessage('bot', questions[0]); fetchAndShowOptions(0); dom.userInput.value = ''; dom.userInput.focus(); dom.chatLog.scrollTo({ top: dom.chatLog.scrollHeight, behavior: 'smooth' }); }, 800); }
         dom.sendButton.addEventListener('click', () => processUserInput());
         dom.userInput.addEventListener('keypress', function(event) { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); processUserInput(); } });
         dom.resetButton.addEventListener('click', resetConversation);
         dom.openApiKeyModalLink.addEventListener('click', (e) => { e.preventDefault(); dom.apiKeyModal.style.display = 'flex'; });
         dom.apiKeyModal.addEventListener('click', (e) => { if (e.target === dom.apiKeyModal || e.target.classList.contains('modal-close')) { dom.apiKeyModal.style.display = 'none'; } });
-        
         resetConversation();
+
+        // --- NEW: Mascot Interaction Logic ---
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            document.body.appendChild(particle);
+
+            // Randomize particle properties
+            const size = Math.floor(Math.random() * 10 + 5);
+            // Colors matching the "Blue/Yellow" theme
+            const colors = ['#005A9C', '#00A9E0', '#FFC425', '#DC3545', '#17A2B8'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.background = color;
+            particle.style.left = `${x - size / 2}px`;
+            particle.style.top = `${y - size / 2}px`;
+
+            const destinationX = (Math.random() - 0.5) * 300;
+            const destinationY = (Math.random() - 0.5) * 300;
+            const rotation = Math.random() * 520;
+            
+            // Animate the particle
+            requestAnimationFrame(() => {
+                particle.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${rotation}deg)`;
+                particle.style.opacity = '0';
+            });
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 1000); // 1000ms is transition duration
+        }
+
+        dom.mascot.addEventListener('click', (e) => {
+            // Create a burst of particles on click
+            for (let i = 0; i < 30; i++) {
+                createParticle(e.clientX, e.clientY);
+            }
+        });
+
     </script>
 </body>
 </html>
